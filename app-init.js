@@ -7,7 +7,9 @@ function init(){
   $$('.tab').forEach(btn=>btn.addEventListener('click',()=>{$$('.tab').forEach(x=>x.classList.toggle('active',x===btn));$$('.panel').forEach(p=>p.classList.toggle('active',p.id===`panel-${btn.dataset.tab}`));}));
   $('#expenseBoard').addEventListener('change',onEdit);$('#expenseBoard').addEventListener('input',onEdit);$('#expenseBoard').addEventListener('click',onExpenseAction);$('#giftTable').addEventListener('change',onEdit);
   $$('.preview-btn').forEach(b=>b.addEventListener('click',()=>preview(b.dataset.preview)));$('#closePreview').addEventListener('click',()=>$('#previewDialog').close());
-  $$('[data-download]').forEach(b=>b.addEventListener('click',()=>downloadOne(b.dataset.download)));$('#downloadAllBtn').addEventListener('click',downloadAll);
+  $('[data-download]').forEach(b=>b.addEventListener('click',()=>downloadOne(b.dataset.download)));$('#downloadAllBtn').addEventListener('click',downloadAll);
+  $('#versionCheckBtn').addEventListener('click',e=>{ if(e.currentTarget.dataset.updateAvailable==='1') reloadLatestVersion(); else checkLatestVersion(true); });
+  setTimeout(()=>checkLatestVersion(false),700);
 }
 
 document.addEventListener('DOMContentLoaded',init);
