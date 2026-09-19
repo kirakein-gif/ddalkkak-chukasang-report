@@ -198,7 +198,7 @@ function renderExpenseBoard(){
             <div class="expense-sub-line">
               <div class="expense-field target-field">
                 <label>집행대상자</label>
-                <input class="cell-input compact" type="text" placeholder="집행대상자 입력" value="${esc(x.target)}" data-id="${x.id}" data-field="target">
+                <input class="cell-input compact" type="text" placeholder="예: 교직원 10명" value="${esc(x.target)}" data-id="${x.id}" data-field="target">
               </div>
               <div class="expense-field vendor-field">
                 <label>장소/수령인${x.category==='경조사'?'(원본)':''}</label>
