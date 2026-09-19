@@ -13,7 +13,7 @@ function sheetDate(d){ return d ? new Date(d.getFullYear(),d.getMonth(),d.getDat
 function reportFileName(title){ return title.replace(/[\\/:*?"<>|]/g,'').trim()+'.xlsx'; }
 
 async function buildExpenseWorkbook(){
-  const list=filtered(state.expense).slice().sort((a,b)=>EXPENSE_GROUPS.indexOf(a.category)-EXPENSE_GROUPS.indexOf(b.category)||sortDate(a,b));
+  const list=filtered(state.expense).filter(x=>!x.excluded).slice().sort((a,b)=>EXPENSE_GROUPS.indexOf(a.category)-EXPENSE_GROUPS.indexOf(b.category)||sortDate(a,b));
   const wb=setupBook(), ws=wb.addWorksheet('업무추진비 월별 집행내역',{views:[{showGridLines:false}]}); ws.properties.defaultRowHeight=21;
   ws.columns=[8.38,12.88,45.63,17.63,13.63,10.13,8.38].map(width=>({width}));
   const title=`업무추진비 월별 집행내역 (${monthLabel(state.selectedMonth)})`; ws.mergeCells('A1:G1'); ws.getCell('A1').value=title; titleStyle(ws.getCell('A1'));
