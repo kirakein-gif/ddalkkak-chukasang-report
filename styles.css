@@ -110,3 +110,15 @@
 .version-check-btn{border:1px solid #d0d5dd;background:#fff;color:#475467;border-radius:8px;padding:6px 9px;font-size:10px;font-weight:700;cursor:pointer}
 .version-check-btn:hover{background:#f8fafc}
 @media(max-width:700px){.app-footer{align-items:flex-start;flex-direction:column}.version-check{width:100%;justify-content:space-between}}
+
+.source-guide{margin-top:16px;padding:20px 24px;box-shadow:none}
+.source-guide-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:15px}
+.source-guide-head h3{margin:9px 0 0;font-size:16px}
+.source-format-badge{padding:7px 10px;border-radius:9px;background:#f2f4f7;color:#475467;font-size:11px;font-weight:800;white-space:nowrap}
+.source-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.source-step{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #e6ebf2;border-radius:11px;background:#fbfcfe}
+.source-step>b{width:28px;height:28px;display:grid;place-items:center;flex:0 0 auto;border-radius:8px;background:#eef4ff;color:#2456a6;font-size:12px}
+.source-step strong{display:block;font-size:12px;color:#344054}
+.source-step span{display:block;margin-top:3px;font-size:10px;color:#667085;line-height:1.45}
+.source-guide-note{margin:12px 0 0;color:#667085;font-size:10px;line-height:1.6}
+@media(max-width:800px){.source-steps{grid-template-columns:1fr}.source-guide-head{align-items:flex-start;flex-direction:column}.source-format-badge{white-space:normal}}
