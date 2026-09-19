@@ -23,7 +23,7 @@ async function buildExpenseWorkbook(){
   for(let c=1;c<=7;c++) headerFill(ws.getCell(4,c));
   const gp=grouped(list,EXPENSE_GROUPS), totalAmount=list.reduce((s,x)=>s+x.amount,0);
   EXPENSE_GROUPS.forEach((g,i)=>{ const r=5+i,a=gp.get(g),amt=a.reduce((s,x)=>s+x.amount,0); ws.getCell(r,1).value=g;ws.getCell(r,3).value=`${a.length}건`;ws.getCell(r,5).value=amt;moneyFmt(ws.getCell(r,5));ws.getCell(r,6).value=totalAmount?amt/totalAmount:0;ws.getCell(r,6).numFmt='0.0%';ws.getCell(r,6).alignment={horizontal:'center'}; });
-  ws.getCell('A10').value='합    계';ws.getCell('C10').value=`${list.length}건`;ws.getCell('E10').value=totalAmount;moneyFmt(ws.getCell('E10'));ws.getCell('F10').value=list.length?1:0;ws.getCell('F10').numFmt='0.00%'; for(let c=1;c<=7;c++){ws.getCell(10,c).fill={type:'pattern',pattern:'solid',fgColor:{argb:totalBlue}};ws.getCell(10,c).font={bold:true};}
+  ws.getCell('A10').value='합    계';ws.getCell('C10').value=`${list.length}건`;ws.getCell('E10').value=totalAmount;moneyFmt(ws.getCell('E10'));ws.getCell('F10').value=list.length?1:0;ws.getCell('F10').numFmt='0.0%'; for(let c=1;c<=7;c++){ws.getCell(10,c).fill={type:'pattern',pattern:'solid',fgColor:{argb:totalBlue}};ws.getCell(10,c).font={bold:true};}
   allBorders(ws.getRange?ws.getRange('A4:G10'):{eachCell:()=>{}}); // harmless fallback for browser ExcelJS variants
   for(let r=4;r<=10;r++)for(let c=1;c<=7;c++){const cell=ws.getCell(r,c);cell.font={...(cell.font||{}),name:'맑은 고딕',size:12,bold:true};cell.alignment={...(cell.alignment||{}),horizontal:cell.alignment?.horizontal||'center',vertical:'middle'};cell.border={top:thin,left:thin,bottom:thin,right:thin};}
   setOuterMedium(ws,4,10,1,7); for(let c=1;c<=7;c++) ws.getCell(4,c).border={...(ws.getCell(4,c).border||{}),bottom:doubleBorder};
