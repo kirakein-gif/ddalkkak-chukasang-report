@@ -37,6 +37,29 @@ function classifyExpense(detail){
 }
 function normalizePayment(v){ const t=normalizeText(v); if(t.includes('카드')) return '법인카드'; if(t.includes('이체')) return '계좌이체'; return t; }
 function classifyCard(statItem){ const t=normalizeText(statItem).toLowerCase(); return (t.includes('업무추진비')||t.includes('협의회')||t.includes('간담회')) ? CARD_GROUPS[0] : CARD_GROUPS[1]; }
+function maskKoreanName(name){
+  const t=normalizeText(name);
+  if(!/^[가-힣]{2,4}$/.test(t)) return '';
+  const compound=['남궁','황보','제갈','선우','사공','서문','독고'];
+  const surname=compound.find(x=>t.startsWith(x) && t.length>x.length) || t[0];
+  return surname + '○'.repeat(Math.max(1,t.length-surname.length));
+}
+function publicVendor(row){
+  const raw=normalizeText(row.vendor);
+  if(row.category!=='경조사') return raw;
+  if(row.privacyMode==='raw') return raw;
+  if(row.privacyMode==='staff') return raw ? '해당교직원' : '';
+  const masked=maskKoreanName(raw);
+  if(masked) return masked;
+  if(raw && row.payment==='계좌이체') return '해당교직원';
+  return raw;
+}
+function publicText(text,row){
+  const raw=normalizeText(row.vendor), replacement=publicVendor(row);
+  let out=normalizeText(text);
+  if(row.category==='경조사' && raw && replacement && raw!==replacement) out=out.split(raw).join(replacement);
+  return out;
+}
 function inferUnitPrice(detail){
   const t=normalizeText(detail).replace(/\s/g,'');
   if(/5천원|5,000원|5000원/.test(t)) return 5000;
@@ -79,7 +102,7 @@ function extractData(rows){
     const date=normalizeDate(r[col.date]); const amount=parseAmount(r[col.amount]);
     const expenseType=normalizeText(r[col.expenseType]); const statItem=normalizeText(r[col.statItem]);
     const vendor=normalizeText(r[col.vendor]); const payment=normalizeText(r[col.payment]);
-    if(statItem==='일반업무추진비') expense.push({id:`e${i}`,category:classifyExpense(detail),date,detail,target:'',vendor,amount,payment:normalizePayment(payment)});
+    if(statItem==='일반업무추진비') expense.push({id:`e${i}`,category:classifyExpense(detail),date,detail,target:'',vendor,amount,payment:normalizePayment(payment),privacyMode:'auto'});
     if(payment.toLowerCase().includes('카드')){
       const isBusiness=expenseType==='업무추진비'; const eligible=(isBusiness&&amount>=500000)||(!isBusiness&&amount>=1000000);
       if(eligible) card.push({id:`c${i}`,category:classifyCard(statItem),date,detail,amount,statItem,expenseType});
@@ -131,9 +154,12 @@ function renderStats(){
 function renderExpense(){
   const tbody=$('#expenseTable tbody'); tbody.innerHTML='';
   filtered(state.expense).forEach(r=>{
-    const tr=document.createElement('tr'); tr.innerHTML=`<td class="editable"><select class="cell-select" data-id="${r.id}" data-field="category">${EXPENSE_GROUPS.map(x=>`<option ${x===r.category?'selected':''}>${esc(x)}</option>`).join('')}</select></td><td class="center">${dateText(r.date)}</td><td>${esc(r.detail)}</td><td class="editable"><input class="cell-input" type="text" placeholder="집행대상자 입력" value="${esc(r.target)}" data-id="${r.id}" data-field="target"></td><td>${esc(r.vendor)}</td><td class="amount">${won(r.amount)}</td><td class="center">${esc(r.payment)}</td>`; tbody.appendChild(tr);
+    const privacy = r.category==='경조사'
+      ? `<div class="privacy-control"><select class="cell-select" data-id="${r.id}" data-field="privacyMode"><option value="auto" ${r.privacyMode==='auto'?'selected':''}>자동 보호</option><option value="staff" ${r.privacyMode==='staff'?'selected':''}>해당교직원</option><option value="raw" ${r.privacyMode==='raw'?'selected':''}>원문 유지</option></select><small>보고서: ${esc(publicVendor(r)||'-')}</small></div>`
+      : '<span class="muted-dash">-</span>';
+    const tr=document.createElement('tr'); tr.innerHTML=`<td class="editable"><select class="cell-select" data-id="${r.id}" data-field="category">${EXPENSE_GROUPS.map(x=>`<option ${x===r.category?'selected':''}>${esc(x)}</option>`).join('')}</select></td><td class="center">${dateText(r.date)}</td><td>${esc(r.detail)}</td><td class="editable"><input class="cell-input" type="text" placeholder="집행대상자 입력" value="${esc(r.target)}" data-id="${r.id}" data-field="target"></td><td>${esc(r.vendor)}</td><td class="editable privacy-cell">${privacy}</td><td class="amount">${won(r.amount)}</td><td class="center">${esc(r.payment)}</td>`; tbody.appendChild(tr);
   });
-  if(!tbody.children.length) tbody.innerHTML='<tr><td colspan="7" class="center">해당 월의 업무추진비 내역이 없습니다.</td></tr>';
+  if(!tbody.children.length) tbody.innerHTML='<tr><td colspan="8" class="center">해당 월의 업무추진비 내역이 없습니다.</td></tr>';
 }
 function renderCard(){
   const tbody=$('#cardTable tbody'); tbody.innerHTML='';
@@ -153,7 +179,7 @@ function onEdit(e){
   if(id.startsWith('e')) row=state.expense.find(x=>x.id===id); else if(id.startsWith('g')) row=state.gift.find(x=>x.id===id);
   if(!row) return;
   if(field==='quantity'||field==='unitPrice'){ row[field]=Number(el.value)||0; if(field==='quantity') row.qtyConfirmed=true; renderGift(); renderStats(); }
-  else row[field]=el.value;
+  else { row[field]=el.value; if(id.startsWith('e') && (field==='category'||field==='privacyMode')) renderExpense(); }
 }
 
 function grouped(list, groups){
@@ -164,7 +190,7 @@ function preview(type){
   if(type==='expense'){
     title=`업무추진비 월별 집행내역 (${monthLabel(state.selectedMonth)})`;
     const gp=grouped(c.expense,EXPENSE_GROUPS); const total=c.expense.reduce((s,x)=>s+x.amount,0);
-    html=`<h2>${esc(title)}</h2><h4>▣ 내역별 현황</h4><table><thead><tr><th>구분</th><th>건수</th><th>금액</th><th>구성비</th></tr></thead><tbody>${EXPENSE_GROUPS.map(g=>{const a=gp.get(g);const amt=a.reduce((s,x)=>s+x.amount,0);return `<tr><td>${esc(g)}</td><td>${a.length}건</td><td>${num(amt)}</td><td>${total?((amt/total)*100).toFixed(1):'0.0'}%</td></tr>`}).join('')}</tbody></table><h4>▣ 세부 집행내역</h4><table><thead><tr><th>구분</th><th>집행일자</th><th>세부내역</th><th>집행대상자</th><th>장소</th><th>집행금액</th><th>결재방법</th></tr></thead><tbody>${c.expense.sort((a,b)=>EXPENSE_GROUPS.indexOf(a.category)-EXPENSE_GROUPS.indexOf(b.category)||sortDate(a,b)).map(x=>`<tr><td>${esc(x.category)}</td><td>${dateText(x.date)}</td><td>${esc(x.detail)}</td><td>${esc(x.target)}</td><td>${esc(x.vendor)}</td><td>${num(x.amount)}</td><td>${esc(x.payment)}</td></tr>`).join('')}</tbody></table>`;
+    html=`<h2>${esc(title)}</h2><h4>▣ 내역별 현황</h4><table><thead><tr><th>구분</th><th>건수</th><th>금액</th><th>구성비</th></tr></thead><tbody>${EXPENSE_GROUPS.map(g=>{const a=gp.get(g);const amt=a.reduce((s,x)=>s+x.amount,0);return `<tr><td>${esc(g)}</td><td>${a.length}건</td><td>${num(amt)}</td><td>${total?((amt/total)*100).toFixed(1):'0.0'}%</td></tr>`}).join('')}</tbody></table><h4>▣ 세부 집행내역</h4><table><thead><tr><th>구분</th><th>집행일자</th><th>세부내역</th><th>집행대상자</th><th>장소</th><th>집행금액</th><th>결재방법</th></tr></thead><tbody>${c.expense.sort((a,b)=>EXPENSE_GROUPS.indexOf(a.category)-EXPENSE_GROUPS.indexOf(b.category)||sortDate(a,b)).map(x=>`<tr><td>${esc(x.category)}</td><td>${dateText(x.date)}</td><td>${esc(publicText(x.detail,x))}</td><td>${esc(publicText(x.target,x))}</td><td>${esc(publicVendor(x))}</td><td>${num(x.amount)}</td><td>${esc(x.payment)}</td></tr>`).join('')}</tbody></table>`;
   }else if(type==='card'){
     title=`법인카드 사용내역 (${monthLabel(state.selectedMonth)})`;
     html=`<h2>${esc(title)}</h2><h4>▣ 공개대상 : 업무추진비(50만원 이상) 기타(100만원 이상)</h4><table><thead><tr><th>구분</th><th>사용일자</th><th>사용내역</th><th>금액</th></tr></thead><tbody>${c.card.sort((a,b)=>CARD_GROUPS.indexOf(a.category)-CARD_GROUPS.indexOf(b.category)||sortDate(a,b)).map(x=>`<tr><td>${esc(x.category)}</td><td>${dateText(x.date)}</td><td>${esc(x.detail)}</td><td>${num(x.amount)}</td></tr>`).join('')}</tbody></table>`;
