@@ -2,6 +2,8 @@
 
 const EXPENSE_GROUPS = ['회의ㆍ간담회','경조사','물품구입','위문ㆍ격려ㆍ직원사기진작','각종회비'];
 const CARD_GROUPS = ['건당 50만원이상 업무추진비','건당 100만원 이상 지출건 중 업무추진비 성격 이외의 경비'];
+const APP_VERSION='0.2.0-beta';
+const APP_VERSION_LABEL='v0.2.0 beta';
 const state = { fileName:'', sourceRows:[], expense:[], card:[], gift:[], months:[], selectedMonth:'' };
 let expenseSortables = [];
 
@@ -35,6 +37,32 @@ function monthKey(d){ return d ? `${d.getFullYear()}-${String(d.getMonth()+1).pa
 function monthLabel(k){ if(!k) return ''; const [y,m]=k.split('-'); return `${y}년 ${Number(m)}월`; }
 function sameMonth(d,k){ return !k || monthKey(d)===k; }
 function sortDate(a,b){ return (a.date?.getTime()||0)-(b.date?.getTime()||0); }
+
+async function checkLatestVersion(manual=false){
+  const status=$('#versionStatus'), btn=$('#versionCheckBtn');
+  if(!status||!btn) return;
+  status.textContent='버전 확인 중'; status.className='version-status checking'; btn.dataset.updateAvailable='';
+  try{
+    const res=await fetch('version.json?ts='+Date.now(),{cache:'no-store'});
+    if(!res.ok) throw new Error('version check failed');
+    const latest=await res.json();
+    if(String(latest.version||'')===APP_VERSION){
+      status.textContent='최신 버전'; status.className='version-status latest'; btn.textContent='버전 확인';
+      if(manual) toast(`${APP_VERSION_LABEL} · 최신 버전입니다.`);
+    }else{
+      const label=latest.label||latest.version||'새 버전';
+      status.textContent=`새 버전 ${label} 있음`; status.className='version-status update';
+      btn.textContent='새 버전 불러오기'; btn.dataset.updateAvailable='1';
+      if(manual) toast(`${label} 버전을 불러올 수 있습니다.`);
+    }
+  }catch(err){
+    status.textContent='버전 확인 실패'; status.className='version-status error'; btn.textContent='다시 확인';
+    if(manual) toast('버전 정보를 확인하지 못했습니다.');
+  }
+}
+function reloadLatestVersion(){
+  const url=new URL(location.href); url.searchParams.set('v',Date.now()); location.href=url.toString();
+}
 
 function classifyExpense(detail){
   const t=normalizeText(detail).toLowerCase();
