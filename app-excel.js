@@ -27,6 +27,12 @@ async function buildExpenseWorkbook(){
   allBorders(ws.getRange?ws.getRange('A4:G10'):{eachCell:()=>{}}); // harmless fallback for browser ExcelJS variants
   for(let r=4;r<=10;r++)for(let c=1;c<=7;c++){const cell=ws.getCell(r,c);cell.font={...(cell.font||{}),name:'맑은 고딕',size:12,bold:true};cell.alignment={...(cell.alignment||{}),horizontal:cell.alignment?.horizontal||'center',vertical:'middle'};cell.border={top:thin,left:thin,bottom:thin,right:thin};}
   setOuterMedium(ws,4,10,1,7); for(let c=1;c<=7;c++) ws.getCell(4,c).border={...(ws.getCell(4,c).border||{}),bottom:doubleBorder};
+  // 내역별 현황의 금액 영역(D:E)은 하나의 시각적 영역처럼 보이도록 가운데 세로선을 없앱니다.
+  for(let r=5;r<=10;r++){
+    const d=ws.getCell(r,4), e=ws.getCell(r,5);
+    const {right: _dr, ...db}=d.border||{}; d.border=db;
+    const {left: _el, ...eb}=e.border||{}; e.border=eb;
+  }
   ws.getCell('A12').value='▣ 세부 집행내역';ws.getCell('A12').font={size:14,bold:true};ws.getCell('G12').value='[금액단위 : 원]';ws.getCell('G12').font={size:11,bold:true};ws.getCell('G12').alignment={horizontal:'right'};
   ['구 분','집행일자','세부내역','집행대상자','장소','집행금액','결재방법'].forEach((v,i)=>{ws.getCell(13,i+1).value=v;headerFill(ws.getCell(13,i+1),'FFFFFF00');});
   let row=14; const detailMergeRanges=[];
