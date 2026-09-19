@@ -11,7 +11,15 @@ const won = n => Number(n || 0).toLocaleString('ko-KR') + '원';
 const num = n => Number(n || 0).toLocaleString('ko-KR');
 const esc = s => String(s ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 
-function toast(msg){ const el=$('#toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),2200); }
+function toast(msg,actionLabel='',action=null){
+  const el=$('#toast'); el.innerHTML='';
+  const span=document.createElement('span'); span.textContent=msg; el.appendChild(span);
+  if(actionLabel&&typeof action==='function'){
+    const btn=document.createElement('button'); btn.type='button'; btn.className='toast-action'; btn.textContent=actionLabel;
+    btn.addEventListener('click',()=>{ action(); el.classList.remove('show'); }); el.appendChild(btn);
+  }
+  el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),action?4500:2400);
+}
 function parseAmount(v){ if(typeof v==='number' && Number.isFinite(v)) return v; const n=Number(String(v??'').replace(/[원,\s]/g,'')); return Number.isFinite(n)?n:0; }
 function normalizeText(v){ return String(v ?? '').trim(); }
 function normalizeDate(v){
@@ -103,7 +111,7 @@ function extractData(rows){
     const date=normalizeDate(r[col.date]); const amount=parseAmount(r[col.amount]);
     const expenseType=normalizeText(r[col.expenseType]); const statItem=normalizeText(r[col.statItem]);
     const vendor=normalizeText(r[col.vendor]); const payment=normalizeText(r[col.payment]);
-    if(statItem==='일반업무추진비') expense.push({id:`e${i}`,category:classifyExpense(detail),date,detail,target:'',vendor,amount,payment:normalizePayment(payment),privacyMode:'auto'});
+    if(statItem==='일반업무추진비') expense.push({id:`e${i}`,category:classifyExpense(detail),date,detail,target:'',vendor,amount,payment:normalizePayment(payment),privacyMode:'auto',excluded:false});
     if(payment.toLowerCase().includes('카드')){
       const isBusiness=expenseType==='업무추진비'; const eligible=(isBusiness&&amount>=500000)||(!isBusiness&&amount>=1000000);
       if(eligible) card.push({id:`c${i}`,category:classifyCard(statItem),date,detail,amount,statItem,expenseType});
@@ -118,7 +126,7 @@ function extractData(rows){
 
 function giftDerived(g){ const face=(Number(g.unitPrice)||0)*(Number(g.quantity)||0); const rate=face>0?(face-(Number(g.amount)||0))/face:0; return {face,rate}; }
 function filtered(list){ return list.filter(x=>sameMonth(x.date,state.selectedMonth)); }
-function current(){ return {expense:filtered(state.expense),card:filtered(state.card),gift:filtered(state.gift)}; }
+function current(){ return {expense:filtered(state.expense).filter(x=>!x.excluded),card:filtered(state.card),gift:filtered(state.gift)}; }
 
 async function handleFile(file){
   if(!window.XLSX){ $('#dependencyWarning').classList.remove('hidden'); return; }
@@ -155,7 +163,7 @@ function renderStats(){
 function renderExpenseBoard(){
   const board=$('#expenseBoard'); if(!board) return;
   expenseSortables.forEach(x=>{ try{x.destroy();}catch(_){} }); expenseSortables=[];
-  const list=filtered(state.expense), total=list.reduce((s,x)=>s+x.amount,0);
+  const monthRows=filtered(state.expense), list=monthRows.filter(x=>!x.excluded), excluded=monthRows.filter(x=>x.excluded).sort(sortDate), total=list.reduce((s,x)=>s+x.amount,0);
 
   board.innerHTML=EXPENSE_GROUPS.map((g,idx)=>{
     const arr=list.filter(x=>x.category===g).sort(sortDate);
@@ -197,8 +205,28 @@ function renderExpenseBoard(){
               ${privacy}
             </div>
           </div>
+          <details class="item-menu">
+            <summary aria-label="항목 메뉴" title="항목 메뉴">⋮</summary>
+            <div class="item-menu-pop">
+              <button type="button" data-expense-action="exclude" data-id="${x.id}">보고서에서 제외</button>
+              <small>오추출·실수 수정용</small>
+            </div>
+          </details>
         </article>`;
     }).join('');
+  if(excluded.length){
+    board.insertAdjacentHTML('beforeend',`
+      <details class="excluded-panel">
+        <summary>제외된 항목 <b>${excluded.length}건</b><span>원본은 변경되지 않습니다</span></summary>
+        <div class="excluded-list">
+          ${excluded.map(x=>`
+            <div class="excluded-item">
+              <div><span>${dateText(x.date)}</span><strong>${esc(x.detail)}</strong><small>${esc(x.category)} · ${won(x.amount)}</small></div>
+              <button type="button" class="restore-btn" data-expense-action="restore" data-id="${x.id}">복원</button>
+            </div>`).join('')}
+        </div>
+      </details>`);
+  }
 
     return `
       <section class="expense-drop-group group-${idx}">
@@ -254,6 +282,18 @@ function renderGift(){
   if(!tbody.children.length) tbody.innerHTML='<tr><td colspan="9" class="center">해당 월의 상품권 내역이 없습니다.</td></tr>';
 }
 function renderAll(){ renderMonthSelect(); renderStats(); renderExpense(); renderCard(); renderGift(); }
+
+function onExpenseAction(e){
+  const btn=e.target.closest('[data-expense-action]'); if(!btn) return;
+  const row=state.expense.find(x=>x.id===btn.dataset.id); if(!row) return;
+  const action=btn.dataset.expenseAction;
+  if(action==='exclude'){
+    row.excluded=true; renderStats(); renderExpense();
+    toast('보고서에서 제외했습니다.','되돌리기',()=>{row.excluded=false;renderStats();renderExpense();});
+  }else if(action==='restore'){
+    row.excluded=false; renderStats(); renderExpense(); toast('제외한 항목을 복원했습니다.');
+  }
+}
 
 function onEdit(e){
   const el=e.target, id=el.dataset.id, field=el.dataset.field; if(!id||!field) return;
