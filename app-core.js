@@ -36,7 +36,7 @@ function classifyExpense(detail){
   return '각종회비';
 }
 function normalizePayment(v){ const t=normalizeText(v); if(t.includes('카드')) return '법인카드'; if(t.includes('이체')) return '계좌이체'; return t; }
-function classifyCard(expenseType){ return normalizeText(expenseType)==='업무추진비' ? CARD_GROUPS[0] : CARD_GROUPS[1]; }
+function classifyCard(statItem){ const t=normalizeText(statItem).toLowerCase(); return (t.includes('업무추진비')||t.includes('협의회')||t.includes('간담회')) ? CARD_GROUPS[0] : CARD_GROUPS[1]; }
 function inferUnitPrice(detail){
   const t=normalizeText(detail).replace(/\s/g,'');
   if(/5천원|5,000원|5000원/.test(t)) return 5000;
@@ -48,23 +48,48 @@ function inferUnitPrice(detail){
 }
 function inferQuantity(detail){ const m=normalizeText(detail).match(/(\d{1,6})\s*(매|장|개)/); return m?Number(m[1]):null; }
 
+function findHeaderRow(rows){
+  const required=['일자','제목','원인행위액','목','원가통계비목','수령인','지급방법'];
+  for(let i=0;i<Math.min(rows.length,20);i++){
+    const cells=(rows[i]||[]).map(normalizeText);
+    if(required.every(h=>cells.includes(h))) return i;
+  }
+  return -1;
+}
+function headerMap(header){
+  const cells=header.map(normalizeText);
+  const find=(...names)=>{ for(const name of names){ const i=cells.indexOf(name); if(i>=0)return i; } return -1; };
+  return {
+    date:find('일자'), detail:find('제목','세부내역'), amount:find('원인행위액','금액'),
+    expenseType:find('목'), statItem:find('원가통계비목'), vendor:find('수령인','거래처','장소'),
+    payment:find('지급방법','결제방법')
+  };
+}
 function extractData(rows){
   const expense=[], card=[], gift=[];
-  for(let i=1;i<rows.length;i++){
+  const headerIndex=findHeaderRow(rows);
+  if(headerIndex<0) throw new Error('K-에듀파인 예산거래처별실적 형식을 찾지 못했습니다. “일자·제목·원인행위액·목·원가통계비목·수령인·지급방법” 열을 확인해 주세요.');
+  const col=headerMap(rows[headerIndex]||[]);
+  let dataRows=0;
+  for(let i=headerIndex+1;i<rows.length;i++){
     const r=rows[i]||[]; if(r.every(v=>normalizeText(v)==='')) continue;
-    const date=normalizeDate(r[0]); const detail=normalizeText(r[3]); const amount=parseAmount(r[5]);
-    const expenseType=normalizeText(r[10]); const statItem=normalizeText(r[12]); const vendor=normalizeText(r[13]); const payment=normalizeText(r[14]);
+    const detail=normalizeText(r[col.detail]);
+    if(detail==='합계') continue;
+    dataRows++;
+    const date=normalizeDate(r[col.date]); const amount=parseAmount(r[col.amount]);
+    const expenseType=normalizeText(r[col.expenseType]); const statItem=normalizeText(r[col.statItem]);
+    const vendor=normalizeText(r[col.vendor]); const payment=normalizeText(r[col.payment]);
     if(statItem==='일반업무추진비') expense.push({id:`e${i}`,category:classifyExpense(detail),date,detail,target:'',vendor,amount,payment:normalizePayment(payment)});
     if(payment.toLowerCase().includes('카드')){
       const isBusiness=expenseType==='업무추진비'; const eligible=(isBusiness&&amount>=500000)||(!isBusiness&&amount>=1000000);
-      if(eligible) card.push({id:`c${i}`,category:classifyCard(expenseType),date,detail,amount,statItem,expenseType});
+      if(eligible) card.push({id:`c${i}`,category:classifyCard(statItem),date,detail,amount,statItem,expenseType});
     }
     if(detail.toLowerCase().includes('상품권')){
       const unitPrice=inferUnitPrice(detail); const parsedQty=inferQuantity(detail); const qty=parsedQty ?? Math.max(1,Math.ceil(amount/unitPrice));
       gift.push({id:`g${i}`,date,detail,vendor,unitPrice,quantity:qty,amount,qtyConfirmed:parsedQty!==null});
     }
   }
-  return {expense,card,gift};
+  return {expense,card,gift,headerIndex,dataRows};
 }
 
 function giftDerived(g){ const face=(Number(g.unitPrice)||0)*(Number(g.quantity)||0); const rate=face>0?(face-(Number(g.amount)||0))/face:0; return {face,rate}; }
@@ -85,7 +110,7 @@ async function handleFile(file){
     state.months=months; state.selectedMonth=months[0]||'';
     renderAll();
     $('#workArea').classList.remove('hidden');
-    $('#fileName').textContent=file.name; $('#sourceInfo').textContent=`${rows.length-1}개 원본 행 · 첫 번째 시트 분석`;
+    $('#fileName').textContent=file.name; $('#sourceInfo').textContent=`${out.dataRows}개 원본 거래 · K-에듀파인 형식 확인`;
     window.scrollTo({top:$('#workArea').offsetTop-12,behavior:'smooth'}); toast('원본 분석이 완료되었습니다.');
   }catch(err){ console.error(err); alert(`파일을 읽지 못했습니다.\n${err.message||err}`); }
 }
