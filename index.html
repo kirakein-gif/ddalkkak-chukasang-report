@@ -7,7 +7,7 @@
   <title>딸깍 추카상 보고서</title>
   <link rel="icon" type="image/png" href="7b48806d1a38541623c2dc112c5dfdde9ff58d87702a4ca78f63d1c173398d6f.png" />
   <link rel="apple-touch-icon" href="7b48806d1a38541623c2dc112c5dfdde9ff58d87702a4ca78f63d1c173398d6f.png" />
-  <link rel="stylesheet" href="styles.css?v=20260919-2350" />
+  <link rel="stylesheet" href="styles.css?v=20260919-2358" />
 </head>
 <body>
   <div class="app-shell">
@@ -89,13 +89,11 @@
           <div class="notice subtle">🔐 경조사로 분류된 건은 수령인 실명을 공개용 보고서에서 자동 보호합니다. 필요하면 <b>김○○ 형태 / 해당교직원 / 원문 유지</b> 중 선택할 수 있습니다.</div>
           <div class="expense-board-wrap">
             <div class="expense-board-title">
-              <div><strong>빠른 분류</strong><small>☰ 손잡이를 잡아 다른 항목으로 끌어 놓으면 구분이 바로 변경됩니다. 모바일은 손잡이를 잠깐 길게 누른 뒤 이동하세요.</small></div>
-              <span class="drag-hint">드래그 앤 드롭</span>
+              <div><strong>업무추진비 분류·검토</strong><small>보고서 출력 순서대로 위에서 아래로 배치했습니다. ☰ 손잡이를 잡아 다른 구분으로 위·아래 이동하면 분류가 변경됩니다.</small></div>
+              <span class="drag-hint">상하 드래그</span>
             </div>
-            <div id="expenseBoard" class="expense-board"></div>
+            <div id="expenseBoard" class="expense-board vertical"></div>
           </div>
-          <div class="detail-review-title"><strong>상세 검토</strong><small>드롭다운 변경, 집행대상자 입력, 경조사 개인정보 표시를 확인합니다.</small></div>
-          <div class="table-scroll"><table id="expenseTable"><thead><tr><th>구분</th><th>집행일자</th><th>세부내역</th><th>집행대상자</th><th>장소/수령인(원본)</th><th>개인정보 공개표시</th><th>집행금액</th><th>결재방법</th></tr></thead><tbody></tbody></table></div>
         </section>
 
         <section class="panel card" id="panel-card">
@@ -139,8 +137,8 @@
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/exceljs@4.4.0/dist/exceljs.min.js';"></script>
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/jszip@3.10.1/dist/jszip.min.js';"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/sortablejs@1.15.6/Sortable.min.js';"></script>
-  <script src="app-core.js?v=20260919-2350"></script>
+  <script src="app-core.js?v=20260919-2358"></script>
   <script src="app-excel.js?v=20260919-2350"></script>
-  <script src="app-init.js?v=20260919-2350"></script>
+  <script src="app-init.js?v=20260919-2358"></script>
 </body>
 </html>
