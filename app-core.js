@@ -3,6 +3,7 @@
 const EXPENSE_GROUPS = ['회의ㆍ간담회','경조사','물품구입','위문ㆍ격려ㆍ직원사기진작','각종회비'];
 const CARD_GROUPS = ['건당 50만원이상 업무추진비','건당 100만원 이상 지출건 중 업무추진비 성격 이외의 경비'];
 const state = { fileName:'', sourceRows:[], expense:[], card:[], gift:[], months:[], selectedMonth:'' };
+let expenseSortables = [];
 
 const $ = (s, root=document) => root.querySelector(s);
 const $$ = (s, root=document) => [...root.querySelectorAll(s)];
@@ -151,6 +152,60 @@ function renderStats(){
   $('#expenseCount').textContent=`${c.expense.length}건`; $('#cardCount').textContent=`${c.card.length}건`; $('#giftCount').textContent=`${c.gift.length}건`; $('#reviewCount').textContent=`${review}건`;
   $('#expenseBadge').textContent=c.expense.length; $('#cardBadge').textContent=c.card.length; $('#giftBadge').textContent=c.gift.length;
 }
+function renderExpenseBoard(){
+  const board=$('#expenseBoard'); if(!board) return;
+  expenseSortables.forEach(x=>{ try{x.destroy();}catch(_){} }); expenseSortables=[];
+  const list=filtered(state.expense), total=list.reduce((s,x)=>s+x.amount,0);
+  board.innerHTML=EXPENSE_GROUPS.map((g,idx)=>{
+    const arr=list.filter(x=>x.category===g).sort(sortDate);
+    const amount=arr.reduce((s,x)=>s+x.amount,0);
+    const ratio=total?((amount/total)*100).toFixed(1):'0.0';
+    const items=arr.map(x=>`
+      <article class="expense-drag-item" data-id="${x.id}">
+        <button type="button" class="drag-handle" aria-label="분류 이동">☰</button>
+        <div class="drag-item-body">
+          <div class="drag-item-meta"><span>${dateText(x.date)}</span><strong>${won(x.amount)}</strong></div>
+          <div class="drag-item-detail">${esc(x.detail)}</div>
+          ${x.category==='경조사'?'<span class="privacy-mini">🔐 개인정보 보호</span>':''}
+        </div>
+      </article>`).join('');
+    return `
+      <section class="expense-drop-group group-${idx}">
+        <header><div><strong>${esc(g)}</strong><small>${arr.length}건 · ${won(amount)}</small></div><span>${ratio}%</span></header>
+        <div class="expense-dropzone" data-category="${esc(g)}">${items || '<div class="empty-drop">여기로 끌어다 놓기</div>'}</div>
+      </section>`;
+  }).join('');
+
+  if(!window.Sortable) return;
+  $('.expense-dropzone',board).forEach(zone=>{
+    expenseSortables.push(new Sortable(zone,{
+      group:'expense-categories',
+      animation:160,
+      handle:'.drag-handle',
+      delay:180,
+      delayOnTouchOnly:true,
+      touchStartThreshold:4,
+      fallbackTolerance:4,
+      forceFallback:true,
+      fallbackOnBody:true,
+      ghostClass:'drag-ghost',
+      chosenClass:'drag-chosen',
+      dragClass:'drag-active',
+      onEnd(evt){
+        const id=evt.item?.dataset?.id, category=evt.to?.dataset?.category;
+        const row=state.expense.find(x=>x.id===id);
+        if(row && category){
+          const changed=row.category!==category;
+          row.category=category;
+          renderStats();
+          renderExpense();
+          if(changed) toast(`“${category}”으로 분류를 변경했습니다.`);
+        }
+      }
+    }));
+  });
+}
+
 function renderExpense(){
   const tbody=$('#expenseTable tbody'); tbody.innerHTML='';
   filtered(state.expense).forEach(r=>{
@@ -160,6 +215,7 @@ function renderExpense(){
     const tr=document.createElement('tr'); tr.innerHTML=`<td class="editable"><select class="cell-select" data-id="${r.id}" data-field="category">${EXPENSE_GROUPS.map(x=>`<option ${x===r.category?'selected':''}>${esc(x)}</option>`).join('')}</select></td><td class="center">${dateText(r.date)}</td><td>${esc(r.detail)}</td><td class="editable"><input class="cell-input" type="text" placeholder="집행대상자 입력" value="${esc(r.target)}" data-id="${r.id}" data-field="target"></td><td>${esc(r.vendor)}</td><td class="editable privacy-cell">${privacy}</td><td class="amount">${won(r.amount)}</td><td class="center">${esc(r.payment)}</td>`; tbody.appendChild(tr);
   });
   if(!tbody.children.length) tbody.innerHTML='<tr><td colspan="8" class="center">해당 월의 업무추진비 내역이 없습니다.</td></tr>';
+  renderExpenseBoard();
 }
 function renderCard(){
   const tbody=$('#cardTable tbody'); tbody.innerHTML='';
@@ -179,7 +235,7 @@ function onEdit(e){
   if(id.startsWith('e')) row=state.expense.find(x=>x.id===id); else if(id.startsWith('g')) row=state.gift.find(x=>x.id===id);
   if(!row) return;
   if(field==='quantity'||field==='unitPrice'){ row[field]=Number(el.value)||0; if(field==='quantity') row.qtyConfirmed=true; renderGift(); renderStats(); }
-  else { row[field]=el.value; if(id.startsWith('e') && (field==='category'||field==='privacyMode')) renderExpense(); }
+  else { row[field]=el.value; if(id.startsWith('e') && (field==='category'||field==='privacyMode')) { if(field==='category') renderStats(); renderExpense(); } }
 }
 
 function grouped(list, groups){
