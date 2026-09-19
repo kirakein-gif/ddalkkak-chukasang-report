@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#2563eb" />
+  <title>딸깍 추카상 보고서</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="logo-mark" aria-hidden="true">딸깍</div>
+        <div>
+          <h1>딸깍 <span class="accent-expense">추</span><span class="accent-card">카</span><span class="accent-gift">상</span> 보고서</h1>
+          <p><strong class="accent-expense">추</strong>진비 · <strong class="accent-card">카</strong>드 · <strong class="accent-gift">상</strong>품권 보고서 자동생성</p>
+        </div>
+      </div>
+      <div class="privacy-pill">🔒 파일은 브라우저 안에서만 처리됩니다</div>
+    </header>
+
+    <main>
+      <section class="hero card">
+        <div class="hero-copy">
+          <span class="eyebrow">K-에듀파인 예산거래처별 실적조회</span>
+          <h2>엑셀을 올리면 공개용 보고서를 자동으로 정리합니다.</h2>
+          <p>법인카드는 기준에 따라 자동 분류하고, 업무추진비는 1차 분류 후 담당자가 직접 검토합니다. 상품권은 권종·수량을 확인해 실제 액면총액과 할인율을 계산합니다.</p>
+        </div>
+        <label class="upload-box" id="dropZone">
+          <input type="file" id="fileInput" accept=".xlsx,.xls,.xlsb" hidden />
+          <span class="upload-icon">↑</span>
+          <strong>원본 Excel 파일 선택</strong>
+          <small>.xlsx · .xls · .xlsb</small>
+        </label>
+      </section>
+
+      <section id="dependencyWarning" class="notice warning hidden">
+        엑셀 처리 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인한 뒤 페이지를 새로고침해 주세요.
+      </section>
+
+      <section id="workArea" class="hidden">
+        <div class="control-bar card">
+          <div class="file-info">
+            <span class="status-dot"></span>
+            <div><strong id="fileName">-</strong><small id="sourceInfo">분석 완료</small></div>
+          </div>
+          <div class="month-control">
+            <label for="monthSelect">보고 기준월</label>
+            <select id="monthSelect"></select>
+          </div>
+          <button class="btn ghost" id="resetBtn">다른 파일 선택</button>
+        </div>
+
+        <div id="monthWarning" class="notice info hidden"></div>
+
+        <section class="stat-grid">
+          <article class="stat-card expense">
+            <div><span>업무추진비</span><strong id="expenseCount">0건</strong></div>
+            <small>분류·집행대상자 검토</small>
+          </article>
+          <article class="stat-card cardpay">
+            <div><span>법인카드</span><strong id="cardCount">0건</strong></div>
+            <small>공개기준 자동 판정</small>
+          </article>
+          <article class="stat-card gift">
+            <div><span>상품권</span><strong id="giftCount">0건</strong></div>
+            <small>권종·수량 및 할인 확인</small>
+          </article>
+          <article class="stat-card review">
+            <div><span>확인 필요</span><strong id="reviewCount">0건</strong></div>
+            <small>상품권 수량 등 보완 항목</small>
+          </article>
+        </section>
+
+        <nav class="tabs card" aria-label="보고서 구분">
+          <button class="tab active" data-tab="expense">업무추진비 <span id="expenseBadge">0</span></button>
+          <button class="tab" data-tab="card">법인카드 <span id="cardBadge">0</span></button>
+          <button class="tab" data-tab="gift">상품권 <span id="giftBadge">0</span></button>
+        </nav>
+
+        <section class="panel card active" id="panel-expense">
+          <div class="panel-head">
+            <div><h3>업무추진비 검토</h3><p>노란색 항목을 확인해 최종 분류와 집행대상자를 확정해 주세요.</p></div>
+            <button class="btn secondary preview-btn" data-preview="expense">보고서 미리보기</button>
+          </div>
+          <div class="table-scroll"><table id="expenseTable"><thead><tr><th>구분</th><th>집행일자</th><th>세부내역</th><th>집행대상자</th><th>장소</th><th>집행금액</th><th>결재방법</th></tr></thead><tbody></tbody></table></div>
+        </section>
+
+        <section class="panel card" id="panel-card">
+          <div class="panel-head">
+            <div><h3>법인카드 공개대상</h3><p>업무추진비 50만원 이상, 그 외 경비 100만원 이상 기준으로 자동 판정합니다.</p></div>
+            <button class="btn secondary preview-btn" data-preview="card">보고서 미리보기</button>
+          </div>
+          <div class="table-scroll"><table id="cardTable"><thead><tr><th>구분</th><th>사용일자</th><th>사용내역</th><th>결재금액</th><th>원가통계비목</th></tr></thead><tbody></tbody></table></div>
+        </section>
+
+        <section class="panel card" id="panel-gift">
+          <div class="panel-head">
+            <div><h3>상품권 검토</h3><p>할인이 있는 경우 결제금액만으로 실제 수량을 확정할 수 없습니다. 권종과 수량을 확인해 주세요.</p></div>
+            <button class="btn secondary preview-btn" data-preview="gift">보고서 미리보기</button>
+          </div>
+          <div class="notice subtle">💡 세부내역에서 “100매/100장”처럼 수량이 확인되면 자동 반영합니다. 수량을 찾지 못한 행은 <b>확인 필요</b>로 표시됩니다.</div>
+          <div class="table-scroll"><table id="giftTable"><thead><tr><th>상태</th><th>구매일자</th><th>구매(사용)용도</th><th>구매처</th><th>권종</th><th>수량</th><th>액면총액</th><th>결제금액</th><th>할인율</th></tr></thead><tbody></tbody></table></div>
+        </section>
+
+        <section class="download-card card">
+          <div><h3>보고서 다운로드</h3><p>현재 화면에서 검토·수정한 내용을 그대로 반영합니다.</p></div>
+          <div class="download-actions">
+            <button class="btn secondary" data-download="expense">업무추진비 XLSX</button>
+            <button class="btn secondary" data-download="card">법인카드 XLSX</button>
+            <button class="btn secondary" data-download="gift">상품권 XLSX</button>
+            <button class="btn primary" id="downloadAllBtn">전체 ZIP 다운로드</button>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="previewDialog">
+    <div class="dialog-head"><strong id="previewTitle">보고서 미리보기</strong><button id="closePreview" aria-label="닫기">×</button></div>
+    <div id="previewContent" class="preview-paper"></div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js';"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/exceljs@4.4.0/dist/exceljs.min.js';"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/jszip@3.10.1/dist/jszip.min.js';"></script>
+  <script src="app.js"></script>
+</body>
+</html>
