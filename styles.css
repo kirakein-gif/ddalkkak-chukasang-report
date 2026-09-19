@@ -122,3 +122,18 @@
 .source-step span{display:block;margin-top:3px;font-size:10px;color:#667085;line-height:1.45}
 .source-guide-note{margin:12px 0 0;color:#667085;font-size:10px;line-height:1.6}
 @media(max-width:800px){.source-steps{grid-template-columns:1fr}.source-guide-head{align-items:flex-start;flex-direction:column}.source-format-badge{white-space:normal}}
+
+.hero-click-row{display:flex;align-items:center;gap:12px;margin:14px 0 4px}
+.click-pop{position:relative;display:inline-flex;align-items:center;gap:8px;padding:9px 16px 9px 18px;border-radius:16px;background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff;box-shadow:0 9px 20px rgba(37,99,235,.22);transform-origin:center;animation:ddalkkak-pop .62s cubic-bezier(.2,.8,.2,1) both}
+.click-word{font-size:20px;line-height:1;font-weight:900;letter-spacing:-1px;text-shadow:0 1px 0 rgba(0,0,0,.08)}
+.click-spark{font-size:18px;line-height:1;animation:ddalkkak-spark 2.6s ease-in-out 1s infinite}
+.click-caption{font-size:12px;color:#667085;font-weight:700;letter-spacing:-.2px}
+.click-ray{position:absolute;width:7px;height:2px;border-radius:99px;background:#fbbf24;opacity:.85}
+.click-ray.ray1{right:-7px;top:7px;transform:rotate(-35deg)}
+.click-ray.ray2{right:-9px;bottom:8px;transform:rotate(28deg)}
+.click-pop:hover{transform:translateY(-2px) rotate(-1deg);box-shadow:0 12px 24px rgba(37,99,235,.27)}
+.click-pop:active{transform:scale(.96)}
+@keyframes ddalkkak-pop{0%{opacity:0;transform:scale(.76) rotate(-4deg)}65%{opacity:1;transform:scale(1.06) rotate(1deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes ddalkkak-spark{0%,70%,100%{transform:scale(1) rotate(0);opacity:.95}78%{transform:scale(1.38) rotate(18deg);opacity:1}86%{transform:scale(.92) rotate(-8deg)}}
+@media(max-width:600px){.hero-click-row{gap:9px;align-items:center}.click-pop{padding:8px 13px 8px 15px;border-radius:14px}.click-word{font-size:18px}.click-caption{font-size:11px;line-height:1.35}}
+@media(prefers-reduced-motion:reduce){.click-pop,.click-spark{animation:none}}
