@@ -177,7 +177,7 @@ function renderExpenseBoard(){
   }).join('');
 
   if(!window.Sortable) return;
-  $('.expense-dropzone',board).forEach(zone=>{
+  Array.from(board.querySelectorAll('.expense-dropzone')).forEach(zone=>{
     expenseSortables.push(new Sortable(zone,{
       group:'expense-categories',
       animation:160,
