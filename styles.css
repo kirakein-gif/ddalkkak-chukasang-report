@@ -137,3 +137,18 @@
 @keyframes ddalkkak-spark{0%,70%,100%{transform:scale(1) rotate(0);opacity:.95}78%{transform:scale(1.38) rotate(18deg);opacity:1}86%{transform:scale(.92) rotate(-8deg)}}
 @media(max-width:600px){.hero-click-row{gap:9px;align-items:center}.click-pop{padding:8px 13px 8px 15px;border-radius:14px}.click-word{font-size:18px}.click-caption{font-size:11px;line-height:1.35}}
 @media(prefers-reduced-motion:reduce){.click-pop,.click-spark{animation:none}}
+
+/* 딸깍 시그니처를 메인 상단 제목에 배치 */
+.brand-title{display:flex;align-items:center;gap:10px;margin:0 0 4px;font-size:20px;line-height:1}
+.brand-click-pop{position:relative;display:inline-flex;align-items:center;gap:6px;padding:7px 13px 7px 15px;border-radius:13px;background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff;box-shadow:0 7px 16px rgba(37,99,235,.22);transform-origin:center;animation:ddalkkak-pop .62s cubic-bezier(.2,.8,.2,1) both;white-space:nowrap}
+.brand-click-pop .click-word{font-size:17px}
+.brand-click-pop .click-spark{font-size:15px}
+.brand-report-title{font-weight:800;white-space:nowrap}
+.brand-click-pop:hover{transform:translateY(-1px) rotate(-1deg);box-shadow:0 9px 18px rgba(37,99,235,.27)}
+.brand-click-pop:active{transform:scale(.96)}
+@media(max-width:600px){
+  .brand-title{gap:7px;font-size:18px}
+  .brand-click-pop{padding:6px 10px 6px 12px;border-radius:11px}
+  .brand-click-pop .click-word{font-size:15px}
+  .brand-click-pop .click-spark{font-size:13px}
+}
