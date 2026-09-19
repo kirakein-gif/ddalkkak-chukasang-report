@@ -96,3 +96,17 @@
   .excluded-item strong{white-space:normal}
   .excluded-item small{display:none}
 }
+
+.app-footer{margin:18px 0 0;padding:18px 4px 4px;display:flex;align-items:center;justify-content:space-between;gap:18px;color:#667085;font-size:11px}
+.footer-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.footer-meta strong{color:#344054}
+.footer-divider{color:#c0c6d0}
+.version-check{display:flex;align-items:center;gap:8px}
+.version-status{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:700;white-space:nowrap}
+.version-status.checking{background:#f2f4f7;color:#667085}
+.version-status.latest{background:#ecfdf3;color:#067647}
+.version-status.update{background:#fff7ed;color:#c2410c}
+.version-status.error{background:#fff1f0;color:#b42318}
+.version-check-btn{border:1px solid #d0d5dd;background:#fff;color:#475467;border-radius:8px;padding:6px 9px;font-size:10px;font-weight:700;cursor:pointer}
+.version-check-btn:hover{background:#f8fafc}
+@media(max-width:700px){.app-footer{align-items:flex-start;flex-direction:column}.version-check{width:100%;justify-content:space-between}}
