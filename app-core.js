@@ -163,12 +163,17 @@ function renderStats(){
 function renderExpenseBoard(){
   const board=$('#expenseBoard'); if(!board) return;
   expenseSortables.forEach(x=>{ try{x.destroy();}catch(_){} }); expenseSortables=[];
-  const monthRows=filtered(state.expense), list=monthRows.filter(x=>!x.excluded), excluded=monthRows.filter(x=>x.excluded).sort(sortDate), total=list.reduce((s,x)=>s+x.amount,0);
 
-  board.innerHTML=EXPENSE_GROUPS.map((g,idx)=>{
+  const monthRows=filtered(state.expense);
+  const list=monthRows.filter(x=>!x.excluded);
+  const excluded=monthRows.filter(x=>x.excluded).sort(sortDate);
+  const total=list.reduce((s,x)=>s+x.amount,0);
+
+  const groupsHtml=EXPENSE_GROUPS.map((g,idx)=>{
     const arr=list.filter(x=>x.category===g).sort(sortDate);
     const amount=arr.reduce((s,x)=>s+x.amount,0);
     const ratio=total?((amount/total)*100).toFixed(1):'0.0';
+
     const items=arr.map(x=>{
       const privacy=x.category==='경조사'
         ? `<div class="expense-field privacy-field">
@@ -180,6 +185,7 @@ function renderExpenseBoard(){
              </select>
            </div>`
         : '';
+
       return `
         <article class="expense-drag-item" data-id="${x.id}">
           <button type="button" class="drag-handle" aria-label="분류 이동" title="잡아서 위·아래로 이동">☰</button>
@@ -214,19 +220,6 @@ function renderExpenseBoard(){
           </details>
         </article>`;
     }).join('');
-  if(excluded.length){
-    board.insertAdjacentHTML('beforeend',`
-      <details class="excluded-panel">
-        <summary>제외된 항목 <b>${excluded.length}건</b><span>원본은 변경되지 않습니다</span></summary>
-        <div class="excluded-list">
-          ${excluded.map(x=>`
-            <div class="excluded-item">
-              <div><span>${dateText(x.date)}</span><strong>${esc(x.detail)}</strong><small>${esc(x.category)} · ${won(x.amount)}</small></div>
-              <button type="button" class="restore-btn" data-expense-action="restore" data-id="${x.id}">복원</button>
-            </div>`).join('')}
-        </div>
-      </details>`);
-  }
 
     return `
       <section class="expense-drop-group group-${idx}">
@@ -237,6 +230,24 @@ function renderExpenseBoard(){
         <div class="expense-dropzone" data-category="${esc(g)}">${items || '<div class="empty-drop">이 구분의 내역이 없습니다 · 여기로 끌어다 놓을 수 있습니다</div>'}</div>
       </section>`;
   }).join('');
+
+  const excludedHtml=excluded.length ? `
+    <details class="excluded-panel">
+      <summary>제외된 항목 <b>${excluded.length}건</b><span>원본은 변경되지 않습니다</span></summary>
+      <div class="excluded-list">
+        ${excluded.map(x=>`
+          <div class="excluded-item">
+            <div>
+              <span>${dateText(x.date)}</span>
+              <strong>${esc(x.detail)}</strong>
+              <small>${esc(x.category)} · ${won(x.amount)}</small>
+            </div>
+            <button type="button" class="restore-btn" data-expense-action="restore" data-id="${x.id}">복원</button>
+          </div>`).join('')}
+      </div>
+    </details>` : '';
+
+  board.innerHTML=groupsHtml+excludedHtml;
 
   if(!window.Sortable) return;
   Array.from(board.querySelectorAll('.expense-dropzone')).forEach(zone=>{
