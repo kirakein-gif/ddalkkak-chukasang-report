@@ -23,3 +23,47 @@
 .drag-ghost{opacity:.35}.drag-chosen{box-shadow:0 8px 20px rgba(37,99,235,.18)}.drag-active{transform:rotate(.5deg)}
 .detail-review-title{justify-content:flex-start;margin-top:4px}
 @media(max-width:900px){.expense-board{grid-template-columns:repeat(5,minmax(205px,1fr))}.expense-board-wrap{padding:12px}.expense-board-title{align-items:flex-start}.drag-hint{display:none}}
+
+/* 업무추진비: 보고서 순서대로 위→아래 한 화면에서 분류와 검토 */
+.expense-board.vertical{display:flex;flex-direction:column;gap:12px;overflow:visible;padding:0}
+.expense-board.vertical .expense-drop-group{min-width:0;width:100%;overflow:visible}
+.expense-board.vertical .expense-drop-group>header{align-items:center;padding:12px 14px}
+.expense-group-name{display:flex;align-items:center;gap:9px;min-width:0}
+.expense-group-name .order-no{width:24px;height:24px;display:grid;place-items:center;border-radius:7px;background:#eef4ff;color:#2456a6;font-size:11px;font-weight:800;flex:0 0 auto}
+.expense-group-name strong{font-size:13px!important}
+.expense-group-summary{display:flex;align-items:center;gap:14px;color:#667085;font-size:11px;white-space:nowrap}
+.expense-group-summary b{color:#2456a6;font-size:11px}
+.expense-board.vertical .expense-dropzone{min-height:54px;padding:8px 10px;gap:7px}
+.expense-board.vertical .expense-drag-item{width:100%;align-items:stretch;border-radius:9px}
+.expense-board.vertical .drag-handle{width:36px;flex-basis:36px;font-size:16px}
+.expense-row-content{min-width:0;flex:1;padding:9px 11px}
+.expense-main-line{display:grid;grid-template-columns:108px minmax(260px,1fr) 112px;align-items:center;gap:12px}
+.expense-date{font-variant-numeric:tabular-nums;color:#475467;font-size:11px;white-space:nowrap}
+.expense-detail{font-size:12px;line-height:1.5;color:#172033;overflow-wrap:anywhere}
+.expense-amount{text-align:right;font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.expense-sub-line{display:grid;grid-template-columns:minmax(170px,1.1fr) minmax(180px,1.2fr) minmax(100px,.7fr) minmax(170px,1fr);gap:8px 12px;margin-top:8px;padding-top:8px;border-top:1px dashed #e6eaf0}
+.expense-field{min-width:0;display:flex;align-items:center;gap:7px}
+.expense-field label{flex:0 0 auto;color:#667085;font-size:10px;font-weight:700}
+.expense-field>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#475467;font-size:11px}
+.expense-field .compact{min-width:0;width:100%;padding:6px 8px;font-size:11px}
+.expense-field.privacy-field{grid-column:auto}
+.expense-board.vertical .empty-drop{min-height:38px}
+@media(max-width:900px){
+  .expense-main-line{grid-template-columns:92px minmax(180px,1fr) 92px;gap:8px}
+  .expense-sub-line{grid-template-columns:1fr 1fr}
+  .expense-field.privacy-field{grid-column:1/-1}
+}
+@media(max-width:600px){
+  .expense-board-title{display:block}
+  .expense-board-title small{margin-top:6px}
+  .expense-drop-group>header{gap:8px}
+  .expense-group-summary{gap:8px;font-size:10px}
+  .expense-group-summary span:nth-child(2){display:none}
+  .expense-main-line{grid-template-columns:1fr auto}
+  .expense-date{grid-column:1/-1}
+  .expense-detail{font-size:12px}
+  .expense-sub-line{grid-template-columns:1fr}
+  .expense-field.privacy-field{grid-column:auto}
+  .expense-field{align-items:flex-start;flex-direction:column;gap:4px}
+  .expense-field>span{white-space:normal}
+}
