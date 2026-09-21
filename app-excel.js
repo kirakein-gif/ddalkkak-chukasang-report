@@ -14,7 +14,7 @@ function reportFileName(title){ return title.replace(/[\\/:*?"<>|]/g,'').trim()+
 
 async function buildExpenseWorkbook(){
   const list=filtered(state.expense).filter(x=>!x.excluded).slice().sort((a,b)=>EXPENSE_GROUPS.indexOf(a.category)-EXPENSE_GROUPS.indexOf(b.category)||sortDate(a,b));
-  const wb=setupBook(), ws=wb.addWorksheet('업무추진비 월별 집행내역',{views:[{showGridLines:false}]}); ws.properties.defaultRowHeight=21;
+  const wb=setupBook(), ws=wb.addWorksheet('업무추진비 집행내역',{views:[{showGridLines:false}]}); ws.properties.defaultRowHeight=21;
   ws.columns=[8.38,12.88,45.63,17.63,13.63,10.13,8.38].map(width=>({width}));
   const period=reportPeriodLabel(list); const title=`업무추진비 집행내역${period?` (${period})`:''}`; ws.mergeCells('A1:G1'); ws.getCell('A1').value=title; titleStyle(ws.getCell('A1'));
   ws.getCell('A3').value='▣ 내역별 현황'; ws.getCell('A3').font={size:14,bold:true}; ws.getCell('G3').value='[금액단위 : 원]'; ws.getCell('G3').font={size:11,bold:true}; ws.getCell('G3').alignment={horizontal:'right'};
