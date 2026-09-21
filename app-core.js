@@ -2,8 +2,8 @@
 
 const EXPENSE_GROUPS = ['회의ㆍ간담회','경조사','물품구입','위문ㆍ격려ㆍ직원사기진작','각종회비'];
 const CARD_GROUPS = ['건당 50만원이상 업무추진비','건당 100만원 이상 지출건 중 업무추진비 성격 이외의 경비'];
-const APP_VERSION='2.2.10-beta';
-const APP_VERSION_LABEL='V2.2.10 beta';
+const APP_VERSION='2.3.0-beta';
+const APP_VERSION_LABEL='V2.3.0 beta';
 const state = { fileName:'', sourceRows:[], expense:[], card:[], gift:[], months:[], selectedMonth:'' };
 let expenseSortables = [];
 
@@ -37,6 +37,21 @@ function monthKey(d){ return d ? `${d.getFullYear()}-${String(d.getMonth()+1).pa
 function monthLabel(k){ if(!k) return ''; const [y,m]=k.split('-'); return `${y}년 ${Number(m)}월`; }
 function sameMonth(d,k){ return !k || monthKey(d)===k; }
 function sortDate(a,b){ return (a.date?.getTime()||0)-(b.date?.getTime()||0); }
+
+function reportDates(list){
+  return (list||[]).map(x=>x?.date).filter(d=>d instanceof Date&&!isNaN(d)).slice().sort((a,b)=>a-b);
+}
+function reportPeriodLabel(list){
+  const ds=reportDates(list); if(!ds.length) return '';
+  const first=ds[0], last=ds[ds.length-1];
+  if(monthKey(first)===monthKey(last)) return monthLabel(monthKey(first));
+  return `${dateText(first)} ~ ${dateText(last)}`;
+}
+function reportPeriodKey(list){
+  const ds=reportDates(list); if(!ds.length) return '전체';
+  const first=dateText(ds[0]), last=dateText(ds[ds.length-1]);
+  return first===last ? first : `${first}_${last}`;
+}
 
 async function checkLatestVersion(manual=false){
   const status=$('#versionStatus'), btn=$('#versionCheckBtn');
@@ -154,7 +169,7 @@ function extractData(rows){
 }
 
 function giftDerived(g){ const face=(Number(g.unitPrice)||0)*(Number(g.quantity)||0); const rate=face>0?(face-(Number(g.amount)||0))/face:0; return {face,rate}; }
-function filtered(list){ return list.filter(x=>sameMonth(x.date,state.selectedMonth)); }
+function filtered(list){ return list; }
 function current(){ return {expense:filtered(state.expense).filter(x=>!x.excluded),card:filtered(state.card),gift:filtered(state.gift)}; }
 
 async function handleFile(file){
@@ -167,24 +182,17 @@ async function handleFile(file){
     if(rows.length<2) throw new Error('데이터 행이 없습니다.');
     const out=extractData(rows);
     state.fileName=file.name; state.sourceRows=rows; state.expense=out.expense; state.card=out.card; state.gift=out.gift;
-    const months=Object.keys(out.monthCounts||{}).sort();
-    const dominantMonth=months.slice().sort((a,b)=>(out.monthCounts[b]||0)-(out.monthCounts[a]||0)||b.localeCompare(a))[0]||'';
-    state.months=months; state.selectedMonth=dominantMonth;
+    state.months=[]; state.selectedMonth='';
     renderAll();
     $('#workArea').classList.remove('hidden');
-    $('#fileName').textContent=file.name; $('#sourceInfo').textContent=`${out.dataRows}개 원본 거래 · K-에듀파인 형식 확인`;
-    window.scrollTo({top:$('#workArea').offsetTop-12,behavior:'smooth'}); toast('원본 분석이 완료되었습니다.');
+    $('#uploadFileName').textContent=file.name;
+    $('#uploadFileMeta').textContent=`${out.dataRows}개 원본 거래 · 전체 기간 합산 · 다시 선택하려면 클릭`;
+    $('#uploadIcon').textContent='✓';
+    $('#dropZone').classList.add('has-file');
+    window.scrollTo({top:$('#workArea').offsetTop-12,behavior:'smooth'}); toast('원본 전체 기간 분석이 완료되었습니다.');
   }catch(err){ console.error(err); alert(`파일을 읽지 못했습니다.\n${err.message||err}`); }
 }
 
-function renderMonthSelect(){
-  const sel=$('#monthSelect'); sel.innerHTML='';
-  if(!state.months.length){ sel.innerHTML='<option value="">날짜 없음</option>'; return; }
-  state.months.forEach(k=>{ const o=document.createElement('option'); o.value=k; o.textContent=monthLabel(k); o.selected=k===state.selectedMonth; sel.appendChild(o); });
-  const warn=$('#monthWarning');
-  if(state.months.length>1){ warn.textContent=`원본에 ${state.months.length}개월 데이터가 섞여 있습니다. 처음 불러올 때 원본 거래가 가장 많은 ${monthLabel(state.selectedMonth)}을 자동 선택하며, 기준월을 바꾸면 해당 월만 보고서에 반영됩니다.`; warn.classList.remove('hidden'); }
-  else warn.classList.add('hidden');
-}
 function renderStats(){
   const c=current(), review=c.gift.filter(g=>!g.qtyConfirmed).length;
   $('#expenseCount').textContent=`${c.expense.length}건`;
@@ -299,14 +307,14 @@ function renderExpense(){
 function renderCard(){
   const tbody=$('#cardTable tbody'); tbody.innerHTML='';
   filtered(state.card).forEach(r=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td><span class="category-badge">${esc(r.category)}</span></td><td class="center">${dateText(r.date)}</td><td>${esc(r.detail)}</td><td class="amount">${won(r.amount)}</td><td>${esc(r.statItem)}</td>`; tbody.appendChild(tr); });
-  if(!tbody.children.length) tbody.innerHTML='<tr><td colspan="5" class="center">해당 월의 법인카드 공개대상 내역이 없습니다.</td></tr>';
+  if(!tbody.children.length) tbody.innerHTML='<tr><td colspan="5" class="center">법인카드 공개대상 내역이 없습니다.</td></tr>';
 }
 function renderGift(){
   const tbody=$('#giftTable tbody'); tbody.innerHTML='';
   filtered(state.gift).forEach(r=>{ const d=giftDerived(r); const tr=document.createElement('tr'); tr.innerHTML=`<td class="center"><span class="status-badge ${r.qtyConfirmed?'ok':'review'}">${r.qtyConfirmed?'자동확인':'확인 필요'}</span></td><td class="center">${dateText(r.date)}</td><td>${esc(r.detail)}</td><td>${esc(r.vendor)}</td><td class="editable"><select class="cell-select gift-edit" data-id="${r.id}" data-field="unitPrice">${[5000,10000,30000,50000,100000].map(v=>`<option value="${v}" ${v===r.unitPrice?'selected':''}>${won(v)}</option>`).join('')}</select></td><td class="editable"><input class="cell-input gift-edit" type="number" min="1" step="1" value="${r.quantity}" data-id="${r.id}" data-field="quantity"></td><td class="amount">${won(d.face)}</td><td class="amount">${won(r.amount)}</td><td class="amount">${(d.rate*100).toFixed(2)}%</td>`; tbody.appendChild(tr); });
-  if(!tbody.children.length) tbody.innerHTML='<tr><td colspan="9" class="center">해당 월의 상품권 내역이 없습니다.</td></tr>';
+  if(!tbody.children.length) tbody.innerHTML='<tr><td colspan="9" class="center">상품권 내역이 없습니다.</td></tr>';
 }
-function renderAll(){ renderMonthSelect(); renderStats(); renderExpense(); renderCard(); renderGift(); }
+function renderAll(){ renderStats(); renderExpense(); renderCard(); renderGift(); }
 
 function onExpenseAction(e){
   const btn=e.target.closest('[data-expense-action]'); if(!btn) return;
@@ -335,14 +343,14 @@ function grouped(list, groups){
 function preview(type){
   const c=current(); let title='', html='';
   if(type==='expense'){
-    title=`업무추진비 월별 집행내역 (${monthLabel(state.selectedMonth)})`;
+    title=`업무추진비 집행내역${reportPeriodLabel(c.expense)?` (${reportPeriodLabel(c.expense)})`:''}`;
     const gp=grouped(c.expense,EXPENSE_GROUPS); const total=c.expense.reduce((s,x)=>s+x.amount,0);
     html=`<h2>${esc(title)}</h2><h4>▣ 내역별 현황</h4><table><thead><tr><th>구분</th><th>건수</th><th>금액</th><th>구성비</th></tr></thead><tbody>${EXPENSE_GROUPS.map(g=>{const a=gp.get(g);const amt=a.reduce((s,x)=>s+x.amount,0);return `<tr><td>${esc(g)}</td><td>${a.length}건</td><td>${num(amt)}</td><td>${total?((amt/total)*100).toFixed(1):'0.0'}%</td></tr>`}).join('')}</tbody></table><h4>▣ 세부 집행내역</h4><table><thead><tr><th>구분</th><th>집행일자</th><th>세부내역</th><th>집행대상자</th><th>장소</th><th>집행금액</th><th>결재방법</th></tr></thead><tbody>${c.expense.sort((a,b)=>EXPENSE_GROUPS.indexOf(a.category)-EXPENSE_GROUPS.indexOf(b.category)||sortDate(a,b)).map(x=>`<tr><td>${esc(x.category)}</td><td>${dateText(x.date)}</td><td>${esc(publicText(x.detail,x))}</td><td>${esc(publicText(x.target,x))}</td><td>${esc(publicVendor(x))}</td><td>${num(x.amount)}</td><td>${esc(x.payment)}</td></tr>`).join('')}</tbody></table>`;
   }else if(type==='card'){
-    title=`법인카드 사용내역 (${monthLabel(state.selectedMonth)})`;
+    title=`법인카드 사용내역${reportPeriodLabel(c.card)?` (${reportPeriodLabel(c.card)})`:''}`;
     html=`<h2>${esc(title)}</h2><h4>▣ 공개대상 : 업무추진비(50만원 이상) 기타(100만원 이상)</h4><table><thead><tr><th>구분</th><th>사용일자</th><th>사용내역</th><th>금액</th></tr></thead><tbody>${c.card.sort((a,b)=>CARD_GROUPS.indexOf(a.category)-CARD_GROUPS.indexOf(b.category)||sortDate(a,b)).map(x=>`<tr><td>${esc(x.category)}</td><td>${dateText(x.date)}</td><td>${esc(x.detail)}</td><td>${num(x.amount)}</td></tr>`).join('')}</tbody></table>`;
   }else{
-    title=`상품권 구매 및 사용내역 (${monthLabel(state.selectedMonth)})`;
+    title=`상품권 구매 및 사용내역${reportPeriodLabel(c.gift)?` (${reportPeriodLabel(c.gift)})`:''}`;
     html=`<h2>${esc(title)}</h2><table><thead><tr><th>구매일자</th><th>구매(사용)용도</th><th>구매처</th><th>총구매수량</th><th>총구매금액(할인전)</th><th>결제금액(할인후)</th><th>할인율</th></tr></thead><tbody>${c.gift.map(x=>{const d=giftDerived(x);return `<tr><td>${dateText(x.date)}</td><td>${esc(x.detail)}</td><td>${esc(x.vendor)}</td><td>${x.quantity}</td><td>${num(d.face)}</td><td>${num(x.amount)}</td><td>${(d.rate*100).toFixed(2)}%</td></tr>`}).join('')}</tbody></table>`;
   }
   $('#previewTitle').textContent=title; $('#previewContent').innerHTML=html; $('#previewDialog').showModal();
