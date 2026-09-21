@@ -7,7 +7,7 @@
   <title>딸깍 추카상 보고서</title>
   <link rel="icon" type="image/png" href="7b48806d1a38541623c2dc112c5dfdde9ff58d87702a4ca78f63d1c173398d6f.png" />
   <link rel="apple-touch-icon" href="7b48806d1a38541623c2dc112c5dfdde9ff58d87702a4ca78f63d1c173398d6f.png" />
-  <link rel="stylesheet" href="styles.css?v=20260921-1040" />
+  <link rel="stylesheet" href="styles.css?v=20260921-1115" />
 </head>
 <body>
   <div class="app-shell">
@@ -15,7 +15,7 @@
       <div class="brand-wrap">
         <img class="brand-icon" src="7b48806d1a38541623c2dc112c5dfdde9ff58d87702a4ca78f63d1c173398d6f.png" alt="딸깍 추카상 보고서 아이콘" />
         <div>
-          <h1 class="brand-title"><span class="brand-click-pop" aria-hidden="true"><span class="click-word">딸깍!</span><span class="click-spark">✦</span><span class="click-ray ray1"></span><span class="click-ray ray2"></span></span><span class="brand-report-title"><span class="accent-expense">추</span><span class="accent-card">카</span><span class="accent-gift">상</span> 보고서</span><span class="title-version-badge" id="appVersion">V2.2.0 beta</span></h1>
+          <h1 class="brand-title"><span class="brand-click-pop" aria-hidden="true"><span class="click-word">딸깍!</span><span class="click-spark">✦</span><span class="click-ray ray1"></span><span class="click-ray ray2"></span></span><span class="brand-report-title"><span class="accent-expense">추</span><span class="accent-card">카</span><span class="accent-gift">상</span> 보고서</span><span class="title-version-badge" id="appVersion">V2.2.1 beta</span></h1>
           <p class="brand-subtitle">업무<strong class="accent-expense">추</strong>진비 · <strong class="accent-card">카</strong>드 · <strong class="accent-gift">상</strong>품권 보고서 자동생성</p>
         </div>
       </div>
@@ -72,29 +72,19 @@
 
         <div id="monthWarning" class="notice info hidden"></div>
 
-        <section class="stat-grid">
-          <article class="stat-card expense">
+        <nav class="stat-tab-grid" aria-label="보고서 구분">
+          <button class="stat-card stat-tab expense active" data-tab="expense" type="button">
             <div><span>업무추진비</span><strong id="expenseCount">0건</strong></div>
             <small>분류·집행대상자 검토</small>
-          </article>
-          <article class="stat-card cardpay">
+          </button>
+          <button class="stat-card stat-tab cardpay" data-tab="card" type="button">
             <div><span>법인카드</span><strong id="cardCount">0건</strong></div>
             <small>공개기준 자동 판정</small>
-          </article>
-          <article class="stat-card gift">
+          </button>
+          <button class="stat-card stat-tab gift" data-tab="gift" type="button">
             <div><span>상품권</span><strong id="giftCount">0건</strong></div>
-            <small>권종·수량 및 할인 확인</small>
-          </article>
-          <article class="stat-card review">
-            <div><span>확인 필요</span><strong id="reviewCount">0건</strong></div>
-            <small>상품권 수량 등 보완 항목</small>
-          </article>
-        </section>
-
-        <nav class="tabs card" aria-label="보고서 구분">
-          <button class="tab active" data-tab="expense">업무추진비 <span id="expenseBadge">0</span></button>
-          <button class="tab" data-tab="card">법인카드 <span id="cardBadge">0</span></button>
-          <button class="tab" data-tab="gift">상품권 <span id="giftBadge">0</span></button>
+            <small>권종·수량 및 할인 확인 <em class="review-inline">확인 필요 <b id="reviewCount">0건</b></em></small>
+          </button>
         </nav>
 
         <section class="panel card active" id="panel-expense">
@@ -162,8 +152,8 @@
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/exceljs@4.4.0/dist/exceljs.min.js';"></script>
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/jszip@3.10.1/dist/jszip.min.js';"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/sortablejs@1.15.6/Sortable.min.js';"></script>
-  <script src="app-core.js?v=20260921-1040"></script>
-  <script src="app-excel.js?v=20260921-1040"></script>
-  <script src="app-init.js?v=20260921-1040"></script>
+  <script src="app-core.js?v=20260921-1115"></script>
+  <script src="app-excel.js?v=20260921-1115"></script>
+  <script src="app-init.js?v=20260921-1115"></script>
 </body>
 </html>
