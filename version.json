@@ -1,8 +1,8 @@
 {
-  "version": "2.2.2-beta",
-  "label": "V2.2.2 beta",
+  "version": "2.2.3-beta",
+  "label": "V2.2.3 beta",
   "updated": "2026-09-21",
-  "notes": "요약카드 탭 클릭이 동작하지 않던 이벤트 바인딩 오류 수정",
+  "notes": "요약카드 탭 전환 이벤트를 위임 방식으로 재구현하고 초기화 중단을 일으키던 선택자 오류 수정",
   "maker": "천안버들유치원 나대현",
   "version_scheme": "major.minor.patch"
 }
