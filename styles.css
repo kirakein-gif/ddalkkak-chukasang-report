@@ -355,3 +355,104 @@ body{word-break:keep-all}
   .topbar{margin-bottom:14px}
   .title-version-badge{min-height:26px;padding:4px 8px;font-size:10.5px}
 }
+
+/* polish source guide, subtitle and footer scale */
+.brand-subtitle{
+  font-size:16px!important;
+  line-height:1.55!important;
+  font-weight:550;
+  color:#5b6b7e!important;
+  letter-spacing:-.01em;
+}
+.brand-subtitle strong{font-weight:850}
+
+.source-guide{
+  padding:30px 30px 28px;
+}
+.source-guide-head{
+  margin-bottom:20px;
+}
+.source-guide-head .eyebrow{
+  font-size:14px;
+}
+.source-guide-head h3{
+  margin-top:11px;
+  font-size:22px;
+  line-height:1.35;
+}
+.source-format-badge{
+  padding:9px 12px;
+  font-size:13.5px;
+  font-weight:850;
+}
+.source-steps{
+  gap:14px;
+}
+.source-step{
+  min-height:82px;
+  gap:13px;
+  padding:17px 16px;
+}
+.source-step>b{
+  width:34px;
+  height:34px;
+  font-size:14px;
+}
+.source-step strong{
+  font-size:15.5px;
+  line-height:1.35;
+}
+.source-step span{
+  margin-top:5px;
+  font-size:13.5px;
+  line-height:1.55;
+}
+.source-guide-note{
+  margin-top:16px;
+  font-size:12.8px;
+  line-height:1.7;
+}
+
+.app-footer{
+  margin-top:24px;
+  padding:15px 16px;
+  border:1px solid #e1e9f3;
+  border-radius:14px;
+  background:#f8fbff;
+  font-size:13.5px;
+  color:#5b6b7e;
+}
+.footer-meta strong{
+  font-size:14px;
+  color:#26384f;
+}
+.version-check{
+  gap:10px;
+}
+.version-status{
+  padding:7px 10px;
+  font-size:12px;
+}
+.version-check-btn{
+  min-height:34px;
+  padding:7px 11px;
+  font-size:12px;
+  border-radius:9px;
+}
+
+@media(max-width:900px){
+  .brand-subtitle{font-size:13.5px!important}
+  .source-guide{padding:24px}
+  .source-guide-head h3{font-size:19px}
+  .source-step{min-height:auto;padding:14px}
+  .source-step strong{font-size:14px}
+  .source-step span{font-size:12.5px}
+  .source-guide-note{font-size:11.8px}
+  .app-footer{font-size:12.5px}
+}
+@media(max-width:600px){
+  .source-guide{padding:20px}
+  .source-guide-head h3{font-size:17.5px}
+  .source-format-badge{font-size:11.5px}
+  .app-footer{padding:13px 14px}
+}
