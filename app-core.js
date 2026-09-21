@@ -2,8 +2,8 @@
 
 const EXPENSE_GROUPS = ['회의ㆍ간담회','경조사','물품구입','위문ㆍ격려ㆍ직원사기진작','각종회비'];
 const CARD_GROUPS = ['건당 50만원이상 업무추진비','건당 100만원 이상 지출건 중 업무추진비 성격 이외의 경비'];
-const APP_VERSION='2.2.0-beta';
-const APP_VERSION_LABEL='V2.2.0 beta';
+const APP_VERSION='2.2.1-beta';
+const APP_VERSION_LABEL='V2.2.1 beta';
 const state = { fileName:'', sourceRows:[], expense:[], card:[], gift:[], months:[], selectedMonth:'' };
 let expenseSortables = [];
 
@@ -187,8 +187,10 @@ function renderMonthSelect(){
 }
 function renderStats(){
   const c=current(), review=c.gift.filter(g=>!g.qtyConfirmed).length;
-  $('#expenseCount').textContent=`${c.expense.length}건`; $('#cardCount').textContent=`${c.card.length}건`; $('#giftCount').textContent=`${c.gift.length}건`; $('#reviewCount').textContent=`${review}건`;
-  $('#expenseBadge').textContent=c.expense.length; $('#cardBadge').textContent=c.card.length; $('#giftBadge').textContent=c.gift.length;
+  $('#expenseCount').textContent=`${c.expense.length}건`;
+  $('#cardCount').textContent=`${c.card.length}건`;
+  $('#giftCount').textContent=`${c.gift.length}건`;
+  $('#reviewCount').textContent=`${review}건`;
 }
 function renderExpenseBoard(){
   const board=$('#expenseBoard'); if(!board) return;
@@ -205,42 +207,24 @@ function renderExpenseBoard(){
     const ratio=total?((amount/total)*100).toFixed(1):'0.0';
 
     const items=arr.map(x=>{
-      const privacy=x.category==='경조사'
-        ? `<div class="expense-field privacy-field">
-             <label>개인정보 공개</label>
-             <select class="cell-select compact" data-id="${x.id}" data-field="privacyMode">
-               <option value="auto" ${x.privacyMode==='auto'?'selected':''}>자동 보호 · ${esc(publicVendor(x)||'-')}</option>
-               <option value="staff" ${x.privacyMode==='staff'?'selected':''}>해당교직원</option>
-               <option value="raw" ${x.privacyMode==='raw'?'selected':''}>원문 유지</option>
-             </select>
-           </div>`
+      const isPrivacy=x.category==='경조사';
+      const privacy=isPrivacy
+        ? `<select class="cell-select compact privacy-inline" title="개인정보 공개표시" data-id="${x.id}" data-field="privacyMode">
+             <option value="auto" ${x.privacyMode==='auto'?'selected':''}>자동 보호 · ${esc(publicVendor(x)||'-')}</option>
+             <option value="staff" ${x.privacyMode==='staff'?'selected':''}>해당교직원</option>
+             <option value="raw" ${x.privacyMode==='raw'?'selected':''}>원문 유지</option>
+           </select>`
         : '';
 
       return `
-        <article class="expense-drag-item" data-id="${x.id}">
-          <button type="button" class="drag-handle" aria-label="분류 이동" title="잡아서 위·아래로 이동">☰</button>
-          <div class="expense-row-content">
-            <div class="expense-main-line">
-              <span class="expense-date">${dateText(x.date)}</span>
-              <span class="expense-detail">${esc(x.detail)}</span>
-              <strong class="expense-amount">${won(x.amount)}</strong>
-            </div>
-            <div class="expense-sub-line">
-              <div class="expense-field target-field">
-                <label>집행대상자</label>
-                <input class="cell-input compact" type="text" placeholder="예: 교직원 10명" value="${esc(x.target)}" data-id="${x.id}" data-field="target">
-              </div>
-              <div class="expense-field vendor-field">
-                <label>장소/수령인${x.category==='경조사'?'(원본)':''}</label>
-                <span>${esc(x.vendor)||'-'}</span>
-              </div>
-              <div class="expense-field payment-field">
-                <label>결재방법</label>
-                <span>${esc(x.payment)||'-'}</span>
-              </div>
-              ${privacy}
-            </div>
-          </div>
+        <article class="expense-drag-item one-line ${isPrivacy?'has-privacy':''}" data-id="${x.id}">
+          <button type="button" class="drag-handle" aria-label="분류 이동" title="잡아서 다른 구분으로 이동">☰</button>
+          <span class="expense-date">${dateText(x.date)}</span>
+          <span class="expense-detail" title="${esc(x.detail)}">${esc(x.detail)}</span>
+          <input class="cell-input compact target-inline" type="text" aria-label="집행대상자" placeholder="집행대상자" value="${esc(x.target)}" data-id="${x.id}" data-field="target">
+          <span class="expense-source" title="${esc(x.vendor)} · ${esc(x.payment)}">${esc(x.vendor)||'-'}${x.payment?' · '+esc(x.payment):''}</span>
+          ${privacy}
+          <strong class="expense-amount">${won(x.amount)}</strong>
           <details class="item-menu">
             <summary aria-label="항목 메뉴" title="항목 메뉴">⋮</summary>
             <div class="item-menu-pop">
@@ -257,7 +241,7 @@ function renderExpenseBoard(){
           <div class="expense-group-name"><span class="order-no">${idx+1}</span><strong>${esc(g)}</strong></div>
           <div class="expense-group-summary"><span>${arr.length}건</span><span>${won(amount)}</span><b>${ratio}%</b></div>
         </header>
-        <div class="expense-dropzone" data-category="${esc(g)}">${items || '<div class="empty-drop">이 구분의 내역이 없습니다 · 여기로 끌어다 놓을 수 있습니다</div>'}</div>
+        <div class="expense-dropzone" data-category="${esc(g)}">${items || '<div class="empty-drop">이 구분의 내역이 없습니다 · 여기로 끌어다 놓기</div>'}</div>
       </section>`;
   }).join('');
 
