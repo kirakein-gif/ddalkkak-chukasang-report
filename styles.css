@@ -824,3 +824,118 @@ body{word-break:keep-all}
   .upload-side{width:100%}
   .upload-side .upload-box{min-height:135px}
 }
+
+/* V2.2.7 upload-first layout + readability */
+.hero-upload-layout{
+  display:grid;
+  grid-template-columns:minmax(300px,360px) minmax(0,1fr);
+  align-items:stretch;
+  gap:30px;
+  padding:30px 34px;
+}
+.hero-upload-box{
+  min-width:0!important;
+  width:100%;
+  min-height:190px;
+  align-self:stretch;
+}
+.hero-copy-right{
+  max-width:none;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.hero-copy-right .eyebrow{align-self:flex-start}
+.hero-copy-right h2{font-size:27px;margin:15px 0 10px}
+.hero-copy-right p{font-size:15.5px;line-height:1.68;max-width:900px}
+.source-route-inline{
+  margin-top:15px;
+  padding:12px 14px;
+  border-left:4px solid #3b82f6;
+  border-radius:8px;
+  background:#f7faff;
+  color:#475467;
+}
+.source-route-inline>strong{
+  display:block;
+  margin-bottom:5px;
+  color:#2456a6;
+  font-size:13.5px;
+}
+.source-route-inline>span{
+  display:block;
+  color:#344054;
+  font-size:13.5px;
+  line-height:1.55;
+}
+.source-route-inline>small{
+  display:block;
+  margin-top:4px;
+  color:#667085;
+  font-size:11.5px;
+  line-height:1.55;
+}
+
+/* 기존 접이식 경로 UI는 더 이상 사용하지 않음 */
+.source-quick-guide{display:none!important}
+
+/* 드래그는 배경 없이 파란 글자 자체로 강조 */
+.drag-emphasis{
+  color:#1d4ed8!important;
+  background:transparent!important;
+  padding:0!important;
+  border-radius:0!important;
+  font-weight:900!important;
+}
+#workArea .drag-hint{
+  color:#1d4ed8;
+  background:#eef5ff;
+  font-size:13px;
+}
+
+/* 작업화면 글자 한 단계 확대 */
+#workArea .file-info strong{font-size:16.5px}
+#workArea .file-info small{font-size:14px}
+#workArea .month-control label{font-size:14.5px}
+#workArea .month-control select{font-size:15px}
+
+.stat-tab span{font-size:16px!important}
+.stat-tab strong{font-size:29px!important}
+.stat-tab small{font-size:13px!important}
+.review-inline,.review-inline b{font-size:11.5px}
+
+#workArea .panel h3{font-size:23.5px}
+#workArea .panel-head p{font-size:14.5px}
+#workArea .notice.subtle{font-size:13.5px}
+#workArea .expense-board-title strong{font-size:16.5px}
+#workArea .expense-board-title small{font-size:13.5px}
+#workArea .expense-group-name strong{font-size:15.5px!important}
+#workArea .expense-group-summary,
+#workArea .expense-group-summary b{font-size:13px}
+#workArea .expense-drag-item.one-line .expense-date{font-size:13.5px}
+#workArea .expense-drag-item.one-line .expense-detail{font-size:14.5px}
+#workArea .expense-drag-item.one-line .target-inline{font-size:13.5px}
+#workArea .expense-drag-item.one-line .expense-source{font-size:13px}
+#workArea .expense-drag-item.one-line .privacy-inline{font-size:13px}
+#workArea .expense-drag-item.one-line .expense-amount{font-size:14.5px}
+
+#workArea table{font-size:14.5px}
+#workArea th{font-size:14px}
+#workArea td{font-size:14.5px}
+
+@media(max-width:900px){
+  .hero-upload-layout{grid-template-columns:1fr;gap:18px;padding:24px}
+  .hero-upload-box{min-height:155px}
+  .hero-copy-right h2{font-size:25px}
+  .source-route-inline>span{font-size:12.5px}
+}
+@media(max-width:600px){
+  .hero-upload-layout{padding:20px}
+  .hero-upload-box{min-height:145px}
+  .hero-copy-right h2{font-size:22px}
+  .hero-copy-right p{font-size:14px}
+  .source-route-inline{padding:10px 12px}
+  .source-route-inline>strong{font-size:12.5px}
+  .source-route-inline>span{font-size:11.5px}
+  .source-route-inline>small{font-size:10.5px}
+}
