@@ -2,8 +2,8 @@
 
 const EXPENSE_GROUPS = ['회의ㆍ간담회','경조사','물품구입','위문ㆍ격려ㆍ직원사기진작','각종회비'];
 const CARD_GROUPS = ['건당 50만원이상 업무추진비','건당 100만원 이상 지출건 중 업무추진비 성격 이외의 경비'];
-const APP_VERSION='2.0.0-beta';
-const APP_VERSION_LABEL='V2.0 beta';
+const APP_VERSION='2.1.0-beta';
+const APP_VERSION_LABEL='V2.1 beta';
 const state = { fileName:'', sourceRows:[], expense:[], card:[], gift:[], months:[], selectedMonth:'' };
 let expenseSortables = [];
 
