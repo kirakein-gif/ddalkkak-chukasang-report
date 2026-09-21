@@ -315,3 +315,43 @@ body{word-break:keep-all}
   .hero h2{font-size:24px}
   .hero p{font-size:14px}
 }
+
+/* title strip inspired by 장바구니품의서 */
+.topbar{
+  position:relative;
+  z-index:1;
+  margin-bottom:20px;
+}
+.topbar::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  top:0;
+  bottom:0;
+  left:50%;
+  width:100vw;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg,#f8fbff 0%,#f4f8ff 58%,#fbfdff 100%);
+  border-bottom:1px solid #dbe7f5;
+  box-shadow:0 4px 14px rgba(37,99,235,.035);
+}
+.brand-title{flex-wrap:wrap}
+.title-version-badge{
+  display:inline-flex;
+  align-items:center;
+  min-height:30px;
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid #d9e6fb;
+  background:#eef5ff;
+  color:#3568b8;
+  font-size:12px;
+  font-weight:850;
+  letter-spacing:0;
+  white-space:nowrap;
+  box-shadow:0 2px 6px rgba(37,99,235,.06);
+}
+@media(max-width:600px){
+  .topbar{margin-bottom:14px}
+  .title-version-badge{min-height:26px;padding:4px 8px;font-size:10.5px}
+}
