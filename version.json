@@ -1,8 +1,8 @@
 {
-  "version": "2.2.4-beta",
-  "label": "V2.2.4 beta",
+  "version": "2.2.5-beta",
+  "label": "V2.2.5 beta",
   "updated": "2026-09-21",
-  "notes": "메인 히어로의 파란 안내 배지를 키우고 큰 검정 제목을 줄여 시각적 균형 조정",
+  "notes": "원본 Excel 안내를 파일선택 영역에 접이식으로 통합, 탭 전환 시 화면 위치 유지, 업무추진비 드래그 안내와 손잡이 강조",
   "maker": "천안버들유치원 나대현",
   "version_scheme": "major.minor.patch"
 }
