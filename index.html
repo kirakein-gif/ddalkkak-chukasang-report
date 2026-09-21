@@ -7,7 +7,7 @@
   <title>딸깍 추카상 보고서</title>
   <link rel="icon" type="image/png" href="7b48806d1a38541623c2dc112c5dfdde9ff58d87702a4ca78f63d1c173398d6f.png" />
   <link rel="apple-touch-icon" href="7b48806d1a38541623c2dc112c5dfdde9ff58d87702a4ca78f63d1c173398d6f.png" />
-  <link rel="stylesheet" href="styles.css?v=20260921-1200" />
+  <link rel="stylesheet" href="styles.css?v=20260921-1230" />
 </head>
 <body>
   <div class="app-shell">
@@ -15,7 +15,7 @@
       <div class="brand-wrap">
         <img class="brand-icon" src="7b48806d1a38541623c2dc112c5dfdde9ff58d87702a4ca78f63d1c173398d6f.png" alt="딸깍 추카상 보고서 아이콘" />
         <div>
-          <h1 class="brand-title"><span class="brand-click-pop" aria-hidden="true"><span class="click-word">딸깍!</span><span class="click-spark">✦</span><span class="click-ray ray1"></span><span class="click-ray ray2"></span></span><span class="brand-report-title"><span class="accent-expense">추</span><span class="accent-card">카</span><span class="accent-gift">상</span> 보고서</span><span class="title-version-badge" id="appVersion">V2.2.4 beta</span></h1>
+          <h1 class="brand-title"><span class="brand-click-pop" aria-hidden="true"><span class="click-word">딸깍!</span><span class="click-spark">✦</span><span class="click-ray ray1"></span><span class="click-ray ray2"></span></span><span class="brand-report-title"><span class="accent-expense">추</span><span class="accent-card">카</span><span class="accent-gift">상</span> 보고서</span><span class="title-version-badge" id="appVersion">V2.2.5 beta</span></h1>
           <p class="brand-subtitle">업무<strong class="accent-expense">추</strong>진비 · <strong class="accent-card">카</strong>드 · <strong class="accent-gift">상</strong>품권 보고서 자동생성</p>
         </div>
       </div>
@@ -29,28 +29,21 @@
           <h2>엑셀을 올리면 공개용 보고서를 자동으로 정리합니다.</h2>
           <p>법인카드는 기준에 따라 자동 분류하고, 업무추진비는 1차 분류 후 담당자가 직접 검토합니다. 상품권은 권종·수량을 확인해 실제 액면총액과 할인율을 계산합니다.</p>
         </div>
-        <label class="upload-box" id="dropZone">
-          <input type="file" id="fileInput" accept=".xlsx,.xls" hidden />
-          <span class="upload-icon">↑</span>
-          <strong>원본 Excel 파일 선택</strong>
-          <small>.xlsx · .xls</small>
-        </label>
-      </section>
-
-      <section class="source-guide card" aria-label="원본 엑셀 준비 방법">
-        <div class="source-guide-head">
-          <div>
-            <span class="eyebrow">원본 Excel 준비</span>
-            <h3>예산거래처별실적조회 파일을 내려받아 올려주세요.</h3>
-          </div>
-          <span class="source-format-badge">예산거래처별실적(원인행위)</span>
+        <div class="upload-side">
+          <label class="upload-box" id="dropZone">
+            <input type="file" id="fileInput" accept=".xlsx,.xls" hidden />
+            <span class="upload-icon">↑</span>
+            <strong>원본 Excel 파일 선택</strong>
+            <small>.xlsx · .xls</small>
+          </label>
+          <details class="source-quick-guide">
+            <summary><strong>원본 Excel 받는 곳</strong><span>경로 보기</span></summary>
+            <div class="source-quick-body">
+              <div class="source-quick-path"><b>K-에듀파인</b><i>→</i><b>학교회계</b><i>→</i><b>지출실적</b><i>→</i><b>예산거래처별실적조회</b></div>
+              <small>기간 조회 후 Excel 다운로드 · 상단 제목 <b>예산거래처별실적(원인행위)</b> 형식</small>
+            </div>
+          </details>
         </div>
-        <div class="source-steps">
-          <div class="source-step"><b>1</b><div><strong>K-에듀파인</strong><span>학교회계 메뉴로 이동</span></div></div>
-          <div class="source-step"><b>2</b><div><strong>지출실적 → 예산거래처별실적조회</strong><span>보고할 기간을 조회</span></div></div>
-          <div class="source-step"><b>3</b><div><strong>Excel 다운로드</strong><span>다운받은 원본 파일을 위 업로드 영역에 넣기</span></div></div>
-        </div>
-        <p class="source-guide-note">※ 기관 권한이나 화면 구성에 따라 상위 메뉴 위치는 조금 다를 수 있습니다. 파일을 열었을 때 상단 제목이 <b>예산거래처별실적(원인행위)</b>이면 현재 프로그램에서 사용하는 형식입니다.</p>
       </section>
 
       <section id="dependencyWarning" class="notice warning hidden">
@@ -95,8 +88,8 @@
           <div class="notice subtle">🔐 경조사로 분류된 건은 수령인 실명을 공개용 보고서에서 자동 보호합니다. 필요하면 <b>김○○ 형태 / 해당교직원 / 원문 유지</b> 중 선택할 수 있습니다.</div>
           <div class="expense-board-wrap">
             <div class="expense-board-title">
-              <div><strong>업무추진비 분류·검토</strong><small>보고서 출력 순서대로 위에서 아래로 배치했습니다. ☰ 손잡이를 잡아 다른 구분으로 위·아래 이동하면 분류가 변경됩니다.</small></div>
-              <span class="drag-hint">상하 드래그</span>
+              <div><strong>업무추진비 분류·검토</strong><small>보고서 출력 순서대로 위에서 아래로 배치했습니다. ☰ 손잡이를 잡아 다른 구분으로 위·아래 <b class="drag-emphasis">드래그</b>하면 분류가 변경됩니다.</small></div>
+              <span class="drag-hint">↕ 드래그로 분류</span>
             </div>
             <div id="expenseBoard" class="expense-board vertical"></div>
           </div>
@@ -152,8 +145,8 @@
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/exceljs@4.4.0/dist/exceljs.min.js';"></script>
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/jszip@3.10.1/dist/jszip.min.js';"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/sortablejs@1.15.6/Sortable.min.js';"></script>
-  <script src="app-core.js?v=20260921-1200"></script>
-  <script src="app-excel.js?v=20260921-1200"></script>
-  <script src="app-init.js?v=20260921-1200"></script>
+  <script src="app-core.js?v=20260921-1230"></script>
+  <script src="app-excel.js?v=20260921-1230"></script>
+  <script src="app-init.js?v=20260921-1230"></script>
 </body>
 </html>
