@@ -1020,3 +1020,116 @@ body{word-break:keep-all}
   .stat-tab-grid{grid-template-columns:1fr}
   .download-hub-menu{left:0;right:auto;width:min(100%,260px)}
 }
+
+/* V2.2.10 hero/workspace type rebalance */
+/* 첫 화면 소개는 간결하게 */
+.hero-copy-right{
+  justify-content:center;
+}
+.hero-copy-right .hero-one-line{
+  margin:0 0 12px;
+  font-size:23px;
+  line-height:1.42;
+  letter-spacing:-.018em;
+  font-weight:800;
+  color:#172033;
+}
+.hero-copy-right .hero-one-line>span{
+  color:#2563eb;
+  font-weight:850;
+}
+.hero-copy-right p{
+  font-size:15px;
+  line-height:1.65;
+}
+.source-route-inline{
+  margin-top:13px;
+}
+
+/* 경조사 자동 보호 강조 */
+.auto-protect{
+  color:#d92d20;
+  font-weight:900;
+}
+
+/* 실제 작업영역을 소개영역보다 더 또렷하게 */
+#workArea .file-info strong{font-size:17px}
+#workArea .file-info small{font-size:14.5px}
+#workArea .month-control label{font-size:15px}
+#workArea .month-control select{font-size:15.5px}
+
+.stat-tab span{font-size:16.5px!important}
+.stat-tab strong{font-size:30px!important}
+.stat-tab small{font-size:13.5px!important}
+.download-hub>summary span{font-size:16.5px}
+.download-hub>summary small{font-size:13.5px}
+
+#workArea .panel h3{
+  font-size:25px;
+  line-height:1.3;
+}
+#workArea .panel-head p{
+  font-size:15px;
+  line-height:1.6;
+}
+#workArea .notice.subtle{
+  font-size:14.5px;
+  line-height:1.65;
+}
+#workArea .expense-board-title strong{font-size:17.5px}
+#workArea .expense-board-title small{
+  font-size:14.5px;
+  line-height:1.55;
+}
+#workArea .drag-hint{font-size:13.5px}
+#workArea .expense-group-name strong{font-size:16.5px!important}
+#workArea .expense-group-summary,
+#workArea .expense-group-summary b{font-size:14px}
+
+#workArea .expense-drag-item.one-line{
+  min-height:50px;
+}
+#workArea .expense-drag-item.one-line .expense-date{font-size:14px}
+#workArea .expense-drag-item.one-line .expense-detail{
+  font-size:15.5px;
+  line-height:1.4;
+}
+#workArea .expense-drag-item.one-line .target-inline{
+  font-size:14px;
+}
+#workArea .expense-drag-item.one-line .expense-source{
+  font-size:13.5px;
+}
+#workArea .expense-drag-item.one-line .privacy-inline{
+  font-size:13.5px;
+}
+#workArea .expense-drag-item.one-line .expense-amount{
+  font-size:15.5px;
+}
+
+/* 카드/상품권 표도 같은 비율로 */
+#workArea table{font-size:15px}
+#workArea th{
+  font-size:14.5px;
+  padding:13px 11px;
+}
+#workArea td{
+  font-size:15px;
+  padding:12px 10px;
+}
+
+/* 첫 화면은 작업화면보다 살짝 작게 유지 */
+@media(max-width:900px){
+  .hero-copy-right .hero-one-line{font-size:21px}
+  .hero-copy-right p{font-size:14px}
+  #workArea .panel h3{font-size:22px}
+  #workArea .panel-head p{font-size:13.5px}
+  #workArea .expense-board-title strong{font-size:15.5px}
+  #workArea .expense-board-title small{font-size:13px}
+  #workArea .expense-drag-item.one-line .expense-detail,
+  #workArea .expense-drag-item.one-line .expense-amount{font-size:13.5px}
+}
+@media(max-width:600px){
+  .hero-copy-right .hero-one-line{font-size:19px}
+  .hero-copy-right p{font-size:13.5px}
+}
