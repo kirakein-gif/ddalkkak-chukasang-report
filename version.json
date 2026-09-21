@@ -1,8 +1,8 @@
 {
-  "version": "2.2.8-beta",
-  "label": "V2.2.8 beta",
+  "version": "2.2.9-beta",
+  "label": "V2.2.9 beta",
   "updated": "2026-09-21",
-  "notes": "상단 설명의 카드 표기를 공식 명칭인 법인카드로 변경하고 카 글자만 포인트 색상 유지",
+  "notes": "업무추진비·법인카드·상품권 요약카드 오른쪽에 보고서 다운로드 카드를 추가해 4칸 구성, 하단 별도 다운로드 영역 제거",
   "maker": "천안버들유치원 나대현",
   "version_scheme": "major.minor.patch"
 }
