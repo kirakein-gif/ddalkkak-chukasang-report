@@ -266,3 +266,52 @@ td{padding:10px 10px}
   .source-step strong{font-size:13px}
   .source-step span{font-size:11.5px}
 }
+
+/* V2.0 visual refinement after PC review */
+body{word-break:keep-all}
+.topbar{height:116px}
+.brand-icon{width:76px;height:76px}
+.brand-title{font-size:34px;gap:12px;margin-bottom:7px;letter-spacing:-.03em}
+.brand-click-pop{padding:9px 16px 9px 18px;border-radius:15px}
+.brand-click-pop .click-word{font-size:24px}
+.brand-click-pop .click-spark{font-size:17px}
+.brand-wrap p{font-size:14.5px;line-height:1.5}
+.privacy-pill{font-size:13.5px;padding:10px 16px}
+
+.hero{padding:40px 40px;gap:40px}
+.hero-copy{max-width:900px}
+.hero .eyebrow{font-size:13.5px}
+.hero h2{font-size:34px;line-height:1.28;margin:17px 0 13px}
+.hero p{max-width:860px;font-size:16px;line-height:1.78}
+.upload-box{min-width:320px;min-height:174px}
+.upload-box strong{font-size:16.5px}
+.upload-box small{font-size:13.5px}
+
+.source-guide{padding:26px 26px}
+.source-guide-head h3{font-size:20.5px}
+.source-format-badge{font-size:12.5px}
+.source-step{padding:16px 14px}
+.source-step strong{font-size:14.5px}
+.source-step span{font-size:12.5px}
+.source-guide-note{font-size:11.8px}
+
+.app-footer{font-size:12.5px;margin-top:22px}
+.version-status,.version-check-btn{font-size:11.5px}
+
+.hero p,.source-guide-note,.source-step span,.panel-head p,.download-card p{word-break:keep-all;overflow-wrap:break-word}
+
+@media(max-width:900px){
+  .topbar{height:auto}
+  .brand-icon{width:62px;height:62px}
+  .brand-title{font-size:24px}
+  .brand-click-pop .click-word{font-size:18px}
+  .hero h2{font-size:28px}
+  .hero p{font-size:14.5px}
+}
+@media(max-width:600px){
+  .brand-icon{width:54px;height:54px}
+  .brand-title{font-size:20px}
+  .brand-click-pop .click-word{font-size:16px}
+  .hero h2{font-size:24px}
+  .hero p{font-size:14px}
+}
