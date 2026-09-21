@@ -456,3 +456,132 @@ body{word-break:keep-all}
   .source-format-badge{font-size:11.5px}
   .app-footer{padding:13px 14px}
 }
+
+/* V2.1 work-area readability */
+#workArea{font-size:15px}
+
+/* 파일/기준월 바 */
+#workArea .control-bar{padding:22px 24px;gap:24px}
+#workArea .file-info{gap:12px}
+#workArea .file-info strong{font-size:16px;line-height:1.4}
+#workArea .file-info small{font-size:13.5px;line-height:1.5;margin-top:4px}
+#workArea .status-dot{width:11px;height:11px;box-shadow:0 0 0 5px #ecfdf3}
+#workArea .month-control{gap:10px}
+#workArea .month-control label{font-size:14px;font-weight:700}
+#workArea .month-control select{min-width:150px;font-size:14.5px;padding:10px 12px}
+#workArea .control-bar .btn{font-size:14px;min-height:44px;padding:10px 15px}
+
+/* 안내문 */
+#workArea .notice{font-size:14.5px;line-height:1.65;padding:14px 17px}
+#workArea .notice.info{margin:17px 0}
+
+/* 요약 카드 */
+#workArea .stat-grid{gap:16px;margin:18px 0}
+#workArea .stat-card{padding:22px 20px;min-height:112px}
+#workArea .stat-card span{font-size:15.5px}
+#workArea .stat-card strong{font-size:30px;line-height:1}
+#workArea .stat-card small{font-size:13.5px;line-height:1.45;margin-top:14px}
+
+/* 탭 */
+#workArea .tabs{padding:8px;gap:7px;margin-bottom:18px}
+#workArea .tab{padding:13px 18px;font-size:15px;border-radius:11px}
+#workArea .tab span{min-width:25px;padding:3px 7px;font-size:12.5px}
+
+/* 검토 패널 */
+#workArea .panel{padding:26px;margin-bottom:18px}
+#workArea .panel-head{margin-bottom:18px}
+#workArea .panel h3{font-size:23px;line-height:1.3;margin-bottom:7px}
+#workArea .panel-head p{font-size:14.5px;line-height:1.65}
+#workArea .panel-head .btn{font-size:14px;min-height:44px;padding:11px 16px}
+#workArea .notice.subtle{font-size:14px;margin-bottom:18px}
+
+/* 업무추진비 분류 영역 */
+#workArea .expense-board-wrap{padding:19px;border-radius:15px}
+#workArea .expense-board-title{margin-bottom:15px}
+#workArea .expense-board-title strong{font-size:16px}
+#workArea .expense-board-title small{font-size:13.5px;line-height:1.6;margin-top:5px}
+#workArea .drag-hint{font-size:12.5px;padding:7px 11px}
+#workArea .expense-board.vertical{gap:14px}
+#workArea .expense-board.vertical .expense-drop-group>header{padding:14px 16px}
+#workArea .expense-group-name{gap:10px}
+#workArea .expense-group-name .order-no{width:30px;height:30px;font-size:13px}
+#workArea .expense-group-name strong{font-size:15.5px!important}
+#workArea .expense-group-summary{gap:16px;font-size:13.5px}
+#workArea .expense-group-summary b{font-size:13.5px}
+#workArea .expense-board.vertical .expense-dropzone{padding:10px 12px;gap:9px;min-height:62px}
+#workArea .expense-board.vertical .empty-drop{min-height:44px;font-size:12.5px}
+#workArea .expense-board.vertical .expense-drag-item{border-radius:10px}
+#workArea .expense-board.vertical .drag-handle{width:42px;flex-basis:42px;font-size:18px}
+#workArea .expense-row-content{padding:12px 13px}
+#workArea .expense-main-line{grid-template-columns:125px minmax(320px,1fr) 125px;gap:14px}
+#workArea .expense-date{font-size:13.5px}
+#workArea .expense-detail{font-size:14.5px;line-height:1.6}
+#workArea .expense-amount{font-size:14.5px}
+#workArea .expense-sub-line{gap:10px 14px;margin-top:10px;padding-top:10px}
+#workArea .expense-field{gap:8px}
+#workArea .expense-field label{font-size:12.5px}
+#workArea .expense-field>span{font-size:13.5px}
+#workArea .expense-field .compact{font-size:13.5px;padding:8px 9px}
+#workArea .item-menu>summary{width:38px;height:38px;font-size:22px;margin-top:8px}
+#workArea .item-menu-pop{width:184px;padding:8px}
+#workArea .item-menu-pop button{font-size:12.5px;padding:9px 10px}
+#workArea .item-menu-pop small{font-size:10.5px}
+#workArea .excluded-panel>summary{font-size:13px;padding:13px 15px}
+#workArea .excluded-item{padding:11px 14px}
+#workArea .excluded-item>div{font-size:12px}
+#workArea .excluded-item strong{font-size:13px}
+#workArea .restore-btn{font-size:12px;padding:8px 11px}
+
+/* 법인카드·상품권 표 */
+#workArea .table-scroll{border-radius:13px}
+#workArea table{font-size:14px}
+#workArea th{font-size:13.5px;padding:13px 11px}
+#workArea td{font-size:14px;padding:11px 10px;line-height:1.55}
+#workArea .cell-input,
+#workArea .cell-select{font-size:13.5px;padding:8px 9px}
+#workArea .status-badge,
+#workArea .category-badge{font-size:12.5px;padding:6px 9px}
+
+/* 다운로드 */
+#workArea .download-card{padding:25px 27px}
+#workArea .download-card h3{font-size:21px}
+#workArea .download-card p{font-size:14px;line-height:1.55}
+#workArea .download-actions{gap:10px}
+#workArea .download-actions .btn{font-size:14px;min-height:44px;padding:11px 15px}
+
+/* 미리보기 */
+.preview-paper{font-size:14px}
+.preview-paper h2{font-size:23px}
+.preview-paper h4{font-size:16px}
+.preview-paper table{font-size:12.5px}
+
+/* 작은 화면은 밀도를 조금 회수 */
+@media(max-width:900px){
+  #workArea{font-size:14px}
+  #workArea .control-bar{padding:18px}
+  #workArea .file-info strong{font-size:14.5px}
+  #workArea .file-info small{font-size:12.5px}
+  #workArea .stat-card{min-height:100px;padding:18px}
+  #workArea .stat-card span{font-size:14px}
+  #workArea .stat-card strong{font-size:25px}
+  #workArea .stat-card small{font-size:12px}
+  #workArea .panel{padding:21px}
+  #workArea .panel h3{font-size:20px}
+  #workArea .panel-head p{font-size:13px}
+  #workArea .expense-main-line{grid-template-columns:100px minmax(180px,1fr) 100px}
+  #workArea .expense-date{font-size:12px}
+  #workArea .expense-detail,
+  #workArea .expense-amount{font-size:13px}
+}
+@media(max-width:600px){
+  #workArea .stat-card{min-height:auto}
+  #workArea .tab{font-size:13px;padding:11px 13px}
+  #workArea .panel{padding:18px}
+  #workArea .expense-group-name strong{font-size:13.5px!important}
+  #workArea .expense-group-summary{font-size:11.5px}
+  #workArea .expense-group-summary b{font-size:11.5px}
+  #workArea .expense-main-line{grid-template-columns:1fr auto}
+  #workArea .expense-date{grid-column:1/-1}
+  #workArea table{font-size:12.5px}
+  #workArea th,#workArea td{font-size:12.5px}
+}
