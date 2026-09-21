@@ -7,7 +7,7 @@
   <title>딸깍 추카상 보고서</title>
   <link rel="icon" type="image/png" href="7b48806d1a38541623c2dc112c5dfdde9ff58d87702a4ca78f63d1c173398d6f.png" />
   <link rel="apple-touch-icon" href="7b48806d1a38541623c2dc112c5dfdde9ff58d87702a4ca78f63d1c173398d6f.png" />
-  <link rel="stylesheet" href="styles.css?v=20260921-1325" />
+  <link rel="stylesheet" href="styles.css?v=20260921-1340" />
 </head>
 <body>
   <div class="app-shell">
@@ -15,7 +15,7 @@
       <div class="brand-wrap">
         <img class="brand-icon" src="7b48806d1a38541623c2dc112c5dfdde9ff58d87702a4ca78f63d1c173398d6f.png" alt="딸깍 추카상 보고서 아이콘" />
         <div>
-          <h1 class="brand-title"><span class="brand-click-pop" aria-hidden="true"><span class="click-word">딸깍!</span><span class="click-spark">✦</span><span class="click-ray ray1"></span><span class="click-ray ray2"></span></span><span class="brand-report-title"><span class="accent-expense">추</span><span class="accent-card">카</span><span class="accent-gift">상</span> 보고서</span><span class="title-version-badge" id="appVersion">V2.2.8 beta</span></h1>
+          <h1 class="brand-title"><span class="brand-click-pop" aria-hidden="true"><span class="click-word">딸깍!</span><span class="click-spark">✦</span><span class="click-ray ray1"></span><span class="click-ray ray2"></span></span><span class="brand-report-title"><span class="accent-expense">추</span><span class="accent-card">카</span><span class="accent-gift">상</span> 보고서</span><span class="title-version-badge" id="appVersion">V2.2.9 beta</span></h1>
           <p class="brand-subtitle">업무<strong class="accent-expense">추</strong>진비 · 법인<strong class="accent-card">카</strong>드 · <strong class="accent-gift">상</strong>품권 보고서 자동생성</p>
         </div>
       </div>
@@ -61,7 +61,7 @@
 
         <div id="monthWarning" class="notice info hidden"></div>
 
-        <nav class="stat-tab-grid" aria-label="보고서 구분">
+        <nav class="stat-tab-grid" aria-label="보고서 구분 및 다운로드">
           <button class="stat-card stat-tab expense active" data-tab="expense" type="button">
             <div><span>업무추진비</span><strong id="expenseCount">0건</strong></div>
             <small>분류·집행대상자 검토</small>
@@ -74,6 +74,18 @@
             <div><span>상품권</span><strong id="giftCount">0건</strong></div>
             <small>권종·수량 및 할인 확인 <em class="review-inline">확인 필요 <b id="reviewCount">0건</b></em></small>
           </button>
+          <details class="stat-card download-hub">
+            <summary>
+              <div><span>보고서 다운로드</span><strong class="download-symbol">↓</strong></div>
+              <small>개별 XLSX · 전체 ZIP</small>
+            </summary>
+            <div class="download-hub-menu">
+              <button class="btn secondary" type="button" data-download="expense">업무추진비 XLSX</button>
+              <button class="btn secondary" type="button" data-download="card">법인카드 XLSX</button>
+              <button class="btn secondary" type="button" data-download="gift">상품권 XLSX</button>
+              <button class="btn primary" type="button" id="downloadAllBtn">전체 ZIP 다운로드</button>
+            </div>
+          </details>
         </nav>
 
         <section class="panel card active" id="panel-expense">
@@ -108,15 +120,6 @@
           <div class="table-scroll"><table id="giftTable"><thead><tr><th>상태</th><th>구매일자</th><th>구매(사용)용도</th><th>구매처</th><th>권종</th><th>수량</th><th>액면총액</th><th>결제금액</th><th>할인율</th></tr></thead><tbody></tbody></table></div>
         </section>
 
-        <section class="download-card card">
-          <div><h3>보고서 다운로드</h3><p>현재 화면에서 검토·수정한 내용을 그대로 반영합니다.</p></div>
-          <div class="download-actions">
-            <button class="btn secondary" data-download="expense">업무추진비 XLSX</button>
-            <button class="btn secondary" data-download="card">법인카드 XLSX</button>
-            <button class="btn secondary" data-download="gift">상품권 XLSX</button>
-            <button class="btn primary" id="downloadAllBtn">전체 ZIP 다운로드</button>
-          </div>
-        </section>
       </section>
     </main>
     <footer class="app-footer">
@@ -141,8 +144,8 @@
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/exceljs@4.4.0/dist/exceljs.min.js';"></script>
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/jszip@3.10.1/dist/jszip.min.js';"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/sortablejs@1.15.6/Sortable.min.js';"></script>
-  <script src="app-core.js?v=20260921-1325"></script>
-  <script src="app-excel.js?v=20260921-1325"></script>
-  <script src="app-init.js?v=20260921-1325"></script>
+  <script src="app-core.js?v=20260921-1340"></script>
+  <script src="app-excel.js?v=20260921-1340"></script>
+  <script src="app-init.js?v=20260921-1340"></script>
 </body>
 </html>
