@@ -1,8 +1,8 @@
 {
-  "version": "2.2.7-beta",
-  "label": "V2.2.7 beta",
+  "version": "2.2.8-beta",
+  "label": "V2.2.8 beta",
   "updated": "2026-09-21",
-  "notes": "파일 선택을 메인 왼쪽에 배치하고 원본 경로 설명을 오른쪽에 통합, 접이식 경로보기 제거, 작업화면 글자 확대, 드래그 문구 파란 글자 강조",
+  "notes": "상단 설명의 카드 표기를 공식 명칭인 법인카드로 변경하고 카 글자만 포인트 색상 유지",
   "maker": "천안버들유치원 나대현",
   "version_scheme": "major.minor.patch"
 }
