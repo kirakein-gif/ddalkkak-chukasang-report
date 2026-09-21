@@ -1,8 +1,8 @@
 {
-  "version": "2.2.5-beta",
-  "label": "V2.2.5 beta",
+  "version": "2.2.6-beta",
+  "label": "V2.2.6 beta",
   "updated": "2026-09-21",
-  "notes": "원본 Excel 안내를 파일선택 영역에 접이식으로 통합, 탭 전환 시 화면 위치 유지, 업무추진비 드래그 안내와 손잡이 강조",
+  "notes": "다운로드 보고서의 업무추진비 세부내역, 법인카드 사용내역, 상품권 구매(사용)용도를 왼쪽 정렬 및 셀에 맞춤으로 변경",
   "maker": "천안버들유치원 나대현",
   "version_scheme": "major.minor.patch"
 }
