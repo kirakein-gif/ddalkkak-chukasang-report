@@ -4,7 +4,7 @@ const EXPENSE_GROUPS = ['회의ㆍ간담회','경조사','물품구입','위문�
 const CARD_GROUPS = ['건당 50만원이상 업무추진비','건당 100만원 이상 지출건 중 업무추진비 성격 이외의 경비'];
 const APP_VERSION='2.3.0-beta';
 const APP_VERSION_LABEL='V2.3.0 beta';
-const state = { fileName:'', sourceRows:[], expense:[], card:[], gift:[], months:[], selectedMonth:'' };
+const state = { fileName:'', sourceRows:[], expense:[], card:[], gift:[] };
 let expenseSortables = [];
 
 const $ = (s, root=document) => root.querySelector(s);
@@ -35,7 +35,6 @@ function normalizeDate(v){
 function dateText(d){ return d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}` : ''; }
 function monthKey(d){ return d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` : ''; }
 function monthLabel(k){ if(!k) return ''; const [y,m]=k.split('-'); return `${y}년 ${Number(m)}월`; }
-function sameMonth(d,k){ return !k || monthKey(d)===k; }
 function sortDate(a,b){ return (a.date?.getTime()||0)-(b.date?.getTime()||0); }
 
 function reportDates(list){
@@ -141,7 +140,7 @@ function headerMap(header){
   };
 }
 function extractData(rows){
-  const expense=[], card=[], gift=[], monthCounts={};
+  const expense=[], card=[], gift=[];
   const headerIndex=findHeaderRow(rows);
   if(headerIndex<0) throw new Error('K-에듀파인 예산거래처별실적 형식을 찾지 못했습니다. “일자·제목·원인행위액·목·원가통계비목·수령인·지급방법” 열을 확인해 주세요.');
   const col=headerMap(rows[headerIndex]||[]);
@@ -152,7 +151,6 @@ function extractData(rows){
     if(detail==='합계') continue;
     dataRows++;
     const date=normalizeDate(r[col.date]); const amount=parseAmount(r[col.amount]);
-    const sourceMonth=monthKey(date); if(sourceMonth) monthCounts[sourceMonth]=(monthCounts[sourceMonth]||0)+1;
     const expenseType=normalizeText(r[col.expenseType]); const statItem=normalizeText(r[col.statItem]);
     const vendor=normalizeText(r[col.vendor]); const payment=normalizeText(r[col.payment]);
     if(statItem==='일반업무추진비') expense.push({id:`e${i}`,category:classifyExpense(detail),date,detail,target:'',vendor,amount,payment:normalizePayment(payment),privacyMode:'auto',excluded:false});
@@ -165,7 +163,7 @@ function extractData(rows){
       gift.push({id:`g${i}`,date,detail,vendor,unitPrice,quantity:qty,amount,qtyConfirmed:parsedQty!==null});
     }
   }
-  return {expense,card,gift,headerIndex,dataRows,monthCounts};
+  return {expense,card,gift,headerIndex,dataRows};
 }
 
 function giftDerived(g){ const face=(Number(g.unitPrice)||0)*(Number(g.quantity)||0); const rate=face>0?(face-(Number(g.amount)||0))/face:0; return {face,rate}; }
@@ -182,9 +180,9 @@ async function handleFile(file){
     if(rows.length<2) throw new Error('데이터 행이 없습니다.');
     const out=extractData(rows);
     state.fileName=file.name; state.sourceRows=rows; state.expense=out.expense; state.card=out.card; state.gift=out.gift;
-    state.months=[]; state.selectedMonth='';
+    const work=$('#workArea'); work.style.minHeight=''; work.dataset.lockHeight='';
     renderAll();
-    $('#workArea').classList.remove('hidden');
+    work.classList.remove('hidden');
     $('#uploadFileName').textContent=file.name;
     $('#uploadFileMeta').textContent=`${out.dataRows}개 원본 거래 · 전체 기간 합산 · 다시 선택하려면 클릭`;
     $('#uploadIcon').textContent='✓';
