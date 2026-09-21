@@ -1,9 +1,8 @@
 function init(){
   setTimeout(()=>{if(!window.XLSX||!window.ExcelJS||!window.JSZip)$('#dependencyWarning').classList.remove('hidden');},2500);
+  $('#fileInput').addEventListener('click',e=>{e.currentTarget.value='';});
   $('#fileInput').addEventListener('change',e=>e.target.files[0]&&handleFile(e.target.files[0]));
   const dz=$('#dropZone');['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag')}));['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag')}));dz.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)handleFile(f)});
-  $('#monthSelect').addEventListener('change',e=>{state.selectedMonth=e.target.value;renderStats();renderExpense();renderCard();renderGift();});
-  $('#resetBtn').addEventListener('click',()=>{state.fileName='';state.sourceRows=[];state.expense=[];state.card=[];state.gift=[];state.months=[];state.selectedMonth='';const work=$('#workArea');work.style.minHeight='';work.dataset.lockHeight='';work.classList.add('hidden');$('#fileInput').value='';window.scrollTo({top:0,behavior:'smooth'});});
   const statTabs=document.querySelector('.stat-tab-grid');
   if(statTabs){
     statTabs.addEventListener('click',e=>{
