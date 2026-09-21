@@ -585,3 +585,156 @@ body{word-break:keep-all}
   #workArea table{font-size:12.5px}
   #workArea th,#workArea td{font-size:12.5px}
 }
+
+/* V2.2.1 compact tab + one-line expense workflow */
+#workArea{font-size:15px}
+#workArea .control-bar{margin-top:14px;padding:17px 20px}
+#workArea .notice.info{margin:12px 0 14px;padding:12px 15px}
+
+/* 요약카드 자체를 탭으로 사용 */
+.stat-tab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 14px}
+.stat-tab{
+  appearance:none;
+  width:100%;
+  text-align:left;
+  cursor:pointer;
+  min-height:88px!important;
+  padding:17px 18px!important;
+  transition:border-color .16s ease,box-shadow .16s ease,background .16s ease,transform .16s ease;
+}
+.stat-tab:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(31,41,55,.07)}
+.stat-tab.active{background:#f8fbff;box-shadow:0 0 0 2px rgba(37,99,235,.10),0 8px 22px rgba(31,41,55,.06)}
+.stat-tab.expense.active{border-color:#f0b429}
+.stat-tab.cardpay.active{border-color:#3b82f6}
+.stat-tab.gift.active{border-color:#12b76a}
+.stat-tab>div{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.stat-tab span{font-size:15px!important}
+.stat-tab strong{font-size:27px!important}
+.stat-tab small{display:flex!important;align-items:center;gap:9px;flex-wrap:wrap;font-size:12.5px!important;margin-top:10px!important}
+.review-inline{font-style:normal;display:inline-flex;align-items:center;gap:4px;padding:3px 7px;border-radius:999px;background:#fff1f0;color:#b42318;font-size:11px;font-weight:750}
+.review-inline b{font-size:11px}
+
+/* 패널 사이 여백 축소 */
+#workArea .panel{padding:20px;margin-bottom:14px}
+#workArea .panel-head{margin-bottom:13px}
+#workArea .panel h3{font-size:22px;margin-bottom:5px}
+#workArea .panel-head p{font-size:13.5px;line-height:1.55}
+#workArea .notice.subtle{margin-bottom:13px;padding:11px 14px;font-size:13px}
+#workArea .expense-board-wrap{margin-bottom:0;padding:14px;border-radius:14px}
+#workArea .expense-board-title{margin-bottom:10px}
+#workArea .expense-board-title strong{font-size:15px}
+#workArea .expense-board-title small{font-size:12.5px;line-height:1.5}
+
+/* 5개 분류 영역을 명확하게 구분 */
+#workArea .expense-board.vertical{gap:10px}
+#workArea .expense-drop-group{
+  border-width:1px;
+  border-left-width:5px;
+  border-radius:12px;
+  overflow:visible;
+}
+#workArea .expense-drop-group>header{padding:10px 13px}
+#workArea .expense-drop-group.group-0{border-left-color:#3b82f6;background:#f8fbff}
+#workArea .expense-drop-group.group-0>header{background:#edf5ff}
+#workArea .expense-drop-group.group-1{border-left-color:#ef4444;background:#fffafa}
+#workArea .expense-drop-group.group-1>header{background:#fff1f2}
+#workArea .expense-drop-group.group-2{border-left-color:#10b981;background:#f9fffc}
+#workArea .expense-drop-group.group-2>header{background:#ecfdf5}
+#workArea .expense-drop-group.group-3{border-left-color:#8b5cf6;background:#fcfaff}
+#workArea .expense-drop-group.group-3>header{background:#f5f3ff}
+#workArea .expense-drop-group.group-4{border-left-color:#64748b;background:#fbfcfd}
+#workArea .expense-drop-group.group-4>header{background:#f1f5f9}
+#workArea .expense-group-name .order-no{width:27px;height:27px;font-size:12px}
+#workArea .expense-group-name strong{font-size:14.5px!important}
+#workArea .expense-group-summary{font-size:12.5px;gap:13px}
+#workArea .expense-group-summary b{font-size:12.5px}
+#workArea .expense-board.vertical .expense-dropzone{min-height:48px;padding:7px 9px;gap:6px;background:rgba(255,255,255,.72)}
+#workArea .expense-board.vertical .empty-drop{
+  min-height:34px;
+  font-size:11.5px;
+  background:rgba(255,255,255,.7);
+  border-color:#cfd8e6
+}
+
+/* 지출건 한 줄 */
+#workArea .expense-drag-item.one-line{
+  display:grid;
+  grid-template-columns:38px 112px minmax(280px,1.55fr) minmax(150px,.85fr) minmax(210px,1fr) 108px 36px;
+  gap:9px;
+  align-items:center;
+  min-height:46px;
+  padding:0 5px 0 0;
+  overflow:visible;
+}
+#workArea .expense-drag-item.one-line.has-privacy{
+  grid-template-columns:38px 112px minmax(240px,1.35fr) minmax(145px,.75fr) minmax(180px,.9fr) minmax(175px,.9fr) 108px 36px;
+}
+#workArea .expense-drag-item.one-line .drag-handle{
+  width:38px;
+  height:100%;
+  min-height:44px;
+  flex-basis:auto;
+  font-size:17px;
+  border-radius:9px 0 0 9px;
+}
+#workArea .expense-drag-item.one-line .expense-date{font-size:12.5px}
+#workArea .expense-drag-item.one-line .expense-detail{
+  min-width:0;
+  font-size:13.5px;
+  line-height:1.35;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#workArea .expense-drag-item.one-line .target-inline{
+  min-width:0;
+  width:100%;
+  margin:0;
+  padding:7px 8px;
+  font-size:12.5px;
+  background:#fffdf4;
+}
+#workArea .expense-drag-item.one-line .expense-source{
+  min-width:0;
+  color:#5f6f82;
+  font-size:12px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#workArea .expense-drag-item.one-line .privacy-inline{
+  min-width:0;
+  width:100%;
+  margin:0;
+  padding:7px 8px;
+  font-size:12px;
+}
+#workArea .expense-drag-item.one-line .expense-amount{
+  font-size:13.5px;
+  text-align:right;
+}
+#workArea .expense-drag-item.one-line .item-menu{align-self:center}
+#workArea .expense-drag-item.one-line .item-menu>summary{width:32px;height:32px;margin:0;font-size:20px}
+#workArea .item-menu-pop{top:34px}
+
+#workArea .excluded-panel{margin-top:8px}
+
+/* 모바일/중간폭에서는 줄바꿈 허용 */
+@media(max-width:1180px){
+  #workArea .expense-drag-item.one-line,
+  #workArea .expense-drag-item.one-line.has-privacy{
+    grid-template-columns:36px 100px minmax(220px,1fr) minmax(145px,.75fr) 102px 34px;
+  }
+  #workArea .expense-drag-item.one-line .expense-source{display:none}
+  #workArea .expense-drag-item.one-line.has-privacy .privacy-inline{grid-column:auto}
+}
+@media(max-width:800px){
+  .stat-tab-grid{grid-template-columns:1fr}
+  .stat-tab{min-height:76px!important}
+  #workArea .expense-drag-item.one-line,
+  #workArea .expense-drag-item.one-line.has-privacy{
+    grid-template-columns:34px 92px minmax(160px,1fr) 96px 32px;
+  }
+  #workArea .expense-drag-item.one-line .target-inline,
+  #workArea .expense-drag-item.one-line .privacy-inline{display:none}
+}
