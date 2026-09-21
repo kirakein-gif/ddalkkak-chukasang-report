@@ -1133,3 +1133,29 @@ body{word-break:keep-all}
   .hero-copy-right .hero-one-line{font-size:19px}
   .hero-copy-right p{font-size:13.5px}
 }
+
+/* V2.3.0 no-period-selector upload state */
+.hero-upload-box.has-file{
+  border-style:solid;
+  border-color:#8fc7ad;
+  background:#f5fbf7;
+}
+.hero-upload-box.has-file .upload-icon{
+  background:#12b76a;
+}
+.hero-upload-box #uploadFileName{
+  display:block;
+  max-width:100%;
+  padding:0 14px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-align:center;
+}
+.hero-upload-box #uploadFileMeta{
+  max-width:100%;
+  padding:0 14px;
+  text-align:center;
+  line-height:1.45;
+}
+#workArea{margin-top:14px}
