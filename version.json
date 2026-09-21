@@ -1,8 +1,8 @@
 {
-  "version": "2.2.0-beta",
-  "label": "V2.2.0 beta",
+  "version": "2.2.1-beta",
+  "label": "V2.2.1 beta",
   "updated": "2026-09-21",
-  "notes": "여러 월이 섞인 K-에듀파인 원본에서 가장 많은 거래가 있는 월을 자동 기준월로 선택하도록 수정",
+  "notes": "요약카드를 탭으로 통합하고 중복 탭 제거, 업무추진비 분류영역 색상 구분 강화, 각 지출건을 한 줄 편집형으로 압축",
   "maker": "천안버들유치원 나대현",
   "version_scheme": "major.minor.patch"
 }
