@@ -939,3 +939,84 @@ body{word-break:keep-all}
   .source-route-inline>span{font-size:11.5px}
   .source-route-inline>small{font-size:10.5px}
 }
+
+/* V2.2.9 four-card summary + download hub */
+.stat-tab-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+.download-hub{
+  position:relative;
+  min-height:88px!important;
+  padding:0!important;
+  border-top:3px solid #0f8f83!important;
+  overflow:visible;
+}
+.download-hub>summary{
+  list-style:none;
+  cursor:pointer;
+  height:100%;
+  min-height:85px;
+  padding:17px 18px;
+  border-radius:13px;
+  display:block;
+}
+.download-hub>summary::-webkit-details-marker{display:none}
+.download-hub>summary>div{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.download-hub>summary span{
+  font-size:16px;
+  font-weight:800;
+  color:#172033;
+}
+.download-hub>summary small{
+  display:block;
+  margin-top:10px;
+  color:#667085;
+  font-size:13px;
+}
+.download-symbol{
+  width:31px;
+  height:31px;
+  display:grid;
+  place-items:center;
+  border-radius:9px;
+  background:#e8f7f4;
+  color:#0f8f83;
+  font-size:19px;
+  line-height:1;
+}
+.download-hub[open]{
+  box-shadow:0 0 0 2px rgba(15,143,131,.10),0 8px 22px rgba(31,41,55,.06);
+}
+.download-hub-menu{
+  position:absolute;
+  z-index:40;
+  top:calc(100% + 7px);
+  right:0;
+  width:235px;
+  padding:9px;
+  display:grid;
+  gap:7px;
+  border:1px solid #d9e4ea;
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 14px 32px rgba(31,41,55,.14);
+}
+.download-hub-menu .btn{
+  width:100%;
+  justify-content:center;
+  font-size:12.5px;
+  min-height:38px;
+}
+@media(max-width:1050px){
+  .stat-tab-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:650px){
+  .stat-tab-grid{grid-template-columns:1fr}
+  .download-hub-menu{left:0;right:auto;width:min(100%,260px)}
+}
