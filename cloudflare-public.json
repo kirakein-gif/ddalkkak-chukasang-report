@@ -1,0 +1,16 @@
+{
+  "repo": "ddalkkak-chukasang-report",
+  "version": "v2.3.2",
+  "files": [
+    "index.html",
+    "styles.css",
+    "app-core.js",
+    "app-excel.js",
+    "app-init.js",
+    "7b48806d1a38541623c2dc112c5dfdde9ff58d87702a4ca78f63d1c173398d6f.png",
+    "c721cafcddf7f1b1e7470942a369695e16df990a5b20362d77ca4d89ba1d678d.png",
+    "file_000000008e848206972ec970f432df61.png",
+    "version.json"
+  ],
+  "publicUrl": "https://ddalkkak-chukasang-report.pages.dev/"
+}
